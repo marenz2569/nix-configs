@@ -4,11 +4,11 @@
   imports =
     [
       ../../lib/common.nix
-      ./nextcloud.nix
+      ../../lib/proxy.nix
       ./hardware-configuration.nix
     ];
 
-#  qemu-user.aarch64 = true;
+  qemu-user.aarch64 = true;
 
 	nixpkgs.config.allowUnfree = true;
 
@@ -16,10 +16,10 @@
 
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  boot.loader.grub.device = "/dev/sdb"; # or "nodev" for efi only
+  boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.configurationLimit = 100;
 
-  networking.hostName = "marenz-build"; # Define your hostname.
+  networking.hostName = "marenz-build";
 
   time.timeZone = "Europe/Amsterdam";
 
@@ -66,10 +66,10 @@
 	  ports = [ 22 ];
   };
 
-  #virtualisation.libvirtd = {
-  #  enable = true;
-  #  onShutdown = "shutdown";
-  #};
+  virtualisation.libvirtd = {
+    enable = true;
+    onShutdown = "shutdown";
+  };
 
   users.users.marenz = {
     isNormalUser = true;
