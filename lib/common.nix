@@ -3,7 +3,7 @@
   
   imports = [
     ./admins.nix
-#    ./qemu.nix
+    ./qemu.nix
   ];
 
 }
