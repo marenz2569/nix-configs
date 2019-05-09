@@ -71,6 +71,18 @@
     onShutdown = "shutdown";
   };
 
+  my.services.proxy = {
+    enable = true;
+    proxyHosts = [
+      { proxyFrom = { hostNames = [ "cloud.bombenverleih.de" ]; httpPort = 80; httpsPort = 443; };
+        proxyTo = { host = "10.0.0.1"; port = 80; };
+      }
+      { proxyFrom = { hostNames = [ "mdm.arkom.men" ]; httpPort = 80; httpsPort = 443; };
+        proxyTo = { host = "10.0.0.1"; port = 80; };
+      }
+    ];
+  };
+
   users.users.marenz = {
     isNormalUser = true;
     uid = 1000;
