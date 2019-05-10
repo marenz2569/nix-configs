@@ -142,7 +142,6 @@ in {
     # TODO: create internal option for paths to certificates
     security.acme.production = true;
     security.acme.directory = "${acmeKeyDir}";
-    security.acme.preliminarySelfsigned = false;
     security.acme.certs = if (cfg.certificates == []) then
       let
         acmePairs = map (host: { name = host; value = {
@@ -156,45 +155,10 @@ in {
         listToAttrs acmePairs
     else {};
 
+    # create preliminary certificates on boot if none exist
     system.activationScripts.createDummyKey =
-    let
-      mkKeys = dir:
       ''
-        dir=${dir}
-        mkdir -m 0700 -p $dir
-
-        if ! [[ -e $dir/key.pem ]]; then
-          workdir="$(mktemp -d)"
-          # Create CA
-          ${pkgs.openssl}/bin/openssl genrsa -des3 -passout pass:xxxx -out $workdir/ca.pass.key 2048
-          ${pkgs.openssl}/bin/openssl rsa -passin pass:xxxx -in $workdir/ca.pass.key -out $workdir/ca.key
-          ${pkgs.openssl}/bin/openssl req -new -key $workdir/ca.key -out $workdir/ca.csr \
-            -subj "/C=UK/ST=Warwickshire/L=Leamington/O=OrgName/OU=Security Department/CN=mdm.arkom.men"
-          ${pkgs.openssl}/bin/openssl x509 -req -days 1 -in $workdir/ca.csr -signkey $workdir/ca.key -out $workdir/ca.crt
-
-          # Create key
-          ${pkgs.openssl}/bin/openssl genrsa -des3 -passout pass:xxxx -out $workdir/server.pass.key 2048
-          ${pkgs.openssl}/bin/openssl rsa -passin pass:xxxx -in $workdir/server.pass.key -out $workdir/server.key
-          ${pkgs.openssl}/bin/openssl req -new -key $workdir/server.key -out $workdir/server.csr \
-            -subj "/C=UK/ST=Warwickshire/L=Leamington/O=OrgName/OU=IT Department/CN=mdm.arkom.men"
-          ${pkgs.openssl}/bin/openssl x509 -req -days 1 -in $workdir/server.csr -CA $workdir/ca.crt \
-            -CAkey $workdir/ca.key -CAserial $workdir/ca.srl -CAcreateserial \
-            -out $workdir/server.crt
-
-          # Copy key to destination
-          cp $workdir/server.key $dir/key.pem
-
-          # Create fullchain.pem (same format as "simp_le ... -f fullchain.pem" creates)
-          cat $workdir/{server.crt,ca.crt} > "$dir/fullchain.pem"
-
-          # Create full.pem for e.g. lighttpd
-          cat $workdir/{server.key,server.crt,ca.crt} > "$dir/full.pem"
-        fi
-      '';
-    in
-      ''
-        ${concatMapStringsSep "\n" (f: mkKeys (concatStrings [ acmeKeyDir "/" f ])) (uniqueValueFrom "hostNames")}
-        chown -R haproxy:haproxy ${acmeKeyDir} 
+        ${concatMapStringsSep "\n" (f: mkKeys (concatStrings [ "systemctl start acme-selfsigned-" f ".service" ])) (uniqueValueFrom "hostNames")}
       '';
 
     # TODO: create acme preliminary before starting haproxy !!
