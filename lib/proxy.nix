@@ -27,6 +27,44 @@ in {
       type = types.listOf types.string;
     };
 
+    timeout = mkOption {
+      type = types.submodule (
+        {
+          options = {
+            client = mkOption {
+              type = types.int;
+              default = 30000;
+              description = ''
+                Client timeout of haproxy.
+              '';
+            };
+            connect = mkOption {
+              type = types.int;
+              default = 5000;
+              description = ''
+                Connect timeout of haproxy.
+              '';
+            };
+            check = mkOption {
+              type = types.int;
+              default = 5000;
+              description = ''
+                Check timeout of haproxy.
+              '';
+            };
+            server = mkOption {
+              type = types.int;
+              default = 30000;
+              description = ''
+                Server timeout of haproxy.
+              '';
+            };
+          };
+        }
+      );
+      default = {};
+    };
+
     proxyHosts = mkOption {
       type = types.listOf (types.submodule (
         {
@@ -57,13 +95,14 @@ in {
                       '';
                     };
                   };
-                });
-                # TODO: add assertion: http port 80 may only be used once with every domain AND port may not be 88 as it is used for local acme redirection
-                description = ''
-                  proxyFrom { hostNames = [ /* list of hostnames */ ]; httpPort = null or 80; httpsPort = 443; } to proxyTo
-                '';
-                default = {};
-              };
+                }
+              );
+              # TODO: add assertion: http port 80 may only be used once with every domain AND port may not be 88 as it is used for local acme redirection
+              description = ''
+                proxyFrom { hostNames = [ /* list of hostnames */ ]; httpPort = null or 80; httpsPort = 443; } to proxyTo
+              '';
+              default = {};
+            };
 
             proxyTo = mkOption {
               type = types.submodule (
@@ -159,13 +198,13 @@ in {
           http = concatMapStringsSep "\n" (port: ''
             frontend http-${toString port}
               bind :::${toString port} v4v6
-              timeout client 30000
+              timeout client ${toString cfg.timeout.client}
               default_backend proxy-backend-http-${toString port}
 
             backend proxy-backend-http-${toString port}
-              timeout connect 5000
-              timeout check 5000
-              timeout server 30000
+              timeout connect ${toString cfg.timeout.connect}
+              timeout check ${toString cfg.timeout.check}
+              timeout server ${toString cfg.timeout.server}
               mode http
               ${optionalString (toString port == "80") ''
                 acl url-acme-http path_beg /.well-known/acme-challenge/
@@ -189,8 +228,8 @@ in {
               option http-server-close
               reqadd X-Forwarded-Proto:\ https
               reqadd X-Forwarded-Port:\ ${toString port}
-              rspadd  Strict-Transport-Security:\ max-age=15768000
-              timeout client 30000
+              rspadd Strict-Transport-Security:\ max-age=15768000
+              timeout client ${toString cfg.timeout.client}
               default_backend proxy-backend-https-${toString port}
               ${let
                   certs = if (cfg.certificates == []) then
@@ -202,9 +241,9 @@ in {
                 }
 
             backend proxy-backend-https-${toString port}
-              timeout connect 5000
-              timeout check 5000
-              timeout server 30000
+              timeout connect ${toString cfg.timeout.connect}
+              timeout check ${toString cfg.timeout.check}
+              timeout server ${toString cfg.timeout.server}
               ${concatMapStringsSep "\n" (proxyHost: optionalString (proxyHost.proxyFrom.hostNames != [])
                   concatMapStringsSep "\n" (hostname: optionalString (proxyHost.proxyFrom.httpsPort == port) ''
                     use-server server-https-${hostname}-${toString port} if { req.hdr(host) -i ${hostname} }
