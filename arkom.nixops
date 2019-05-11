@@ -9,7 +9,7 @@
 			];
 			deployment = {
 				targetHost = "2a02:8106:208:5201:461e:a1ff:fe59:2ee8";
-				targetPort = 22;
+				targetPort = 1122;
 			};
 		};
 
