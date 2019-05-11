@@ -151,6 +151,10 @@ in {
 
   config = mkIf cfg.enable {
 
+    networking.nat.enable = true;
+    networking.nat.internalInterfaces = ["ve-+"];
+    networking.nat.externalInterface = "eth0";
+
     networking.firewall = {
       enable = true;
       rejectPackets = true;

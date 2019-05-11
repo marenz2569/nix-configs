@@ -4,18 +4,11 @@
   imports =
     [
       ../../lib/common.nix
-      ../../lib/proxy.nix
       ./hardware-configuration.nix
       ./nextcloud.nix
     ];
 
   qemu-user.aarch64 = true;
-
-	nixpkgs.config.allowUnfree = true;
-
-	system.stateVersion = "19.03";
-
-  boot.tmpOnTmpfs = true;
 
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
@@ -39,30 +32,6 @@
     virtmanager
   ];
 
-	environment.shellAliases = {
-		l = "ls -laFh";
-		ll = "ls -lFh";
-		cl = "clear";
-		v = "vim";
-		g = "git";
-	};
-
-	programs = {
-		gnupg.agent = {
-			enable = true;
-			enableSSHSupport = true;
-		};
-		vim.defaultEditor = true;
-		zsh = {
-			enable = true;
-			ohMyZsh = {
-				enable = true;
-				theme = "agnoster";
-				plugins = [ "git" "virtualenv" "sudo" ];
-			};
-		};
-	};
-
   services.openssh = {
 	  enable = true;
     passwordAuthentication = false;
@@ -82,10 +51,6 @@
       }
     ];
   };
-
-  networking.nat.enable = true;
-  networking.nat.internalInterfaces = ["ve-+"];
-  networking.nat.externalInterface = "eth0";
 
   users.users.marenz = {
     isNormalUser = true;
