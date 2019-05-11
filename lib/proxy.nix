@@ -153,7 +153,6 @@ in {
 
     networking.nat.enable = true;
     networking.nat.internalInterfaces = ["ve-+"];
-    networking.nat.externalInterface = "eth0";
 
     networking.firewall = {
       enable = true;

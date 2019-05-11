@@ -16,6 +16,7 @@
   boot.loader.grub.configurationLimit = 100;
 
   networking.hostName = "marenz-build";
+  networking.nat.externalInterface = "enp3s0f0";
 
   time.timeZone = "Europe/Amsterdam";
 
