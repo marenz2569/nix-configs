@@ -6,6 +6,7 @@
       ../../lib/common.nix
       ../../lib/proxy.nix
       ./hardware-configuration.nix
+      ./nextcloud.nix
     ];
 
   qemu-user.aarch64 = true;
@@ -62,8 +63,8 @@
 
   services.openssh = {
 	  enable = true;
-  	permitRootLogin = "yes";
-	  ports = [ 22 ];
+    passwordAuthentication = false;
+	  ports = [ 1122 ];
   };
 
   virtualisation.libvirtd = {
@@ -75,20 +76,21 @@
     enable = true;
     proxyHosts = [
       { proxyFrom = { hostNames = [ "cloud.bombenverleih.de" ]; httpPort = 80; httpsPort = 443; };
-        proxyTo = { host = "10.0.0.1"; port = 80; };
-      }
-      { proxyFrom = { hostNames = [ "mdm.arkom.men" ]; httpPort = 80; httpsPort = 443; };
-        proxyTo = { host = "10.0.0.1"; port = 80; };
+        proxyTo = { host = "10.0.33.11"; port = 80; };
       }
     ];
   };
+
+  networking.nat.enable = true;
+  networking.nat.internalInterfaces = ["ve-+"];
+  networking.nat.externalInterface = "eth0";
 
   users.users.marenz = {
     isNormalUser = true;
     uid = 1000;
     home = "/home/marenz";
     createHome = true;
-    extraGroups = [ "wheel" "audio" "libvirtd" ];
+    extraGroups = [ "wheel" "libvirtd" ];
     shell = pkgs.zsh;
 	};
 

@@ -14,7 +14,7 @@ in {
 
     enable = mkOption {
       default = false;
-      description = "whether to enable proxy";
+      description = "Whether to enable the proxy";
       type = types.bool;
     };
 
@@ -58,11 +58,9 @@ in {
                     };
                   };
                 });
-                # TODO: add assertion
+                # TODO: add assertion: http port 80 may only be used once with every domain AND port may not be 88 as it is used for local acme redirection
                 description = ''
-                  proxyFrom { hostNames = [ /* list of hostnames *]; httpPort = null or 80; httpsPort = 443; } to proxyTo
-                  http ports have to rewrite to https. except for /.well-known/acme-challenge
-                  TODO: add assertion: http port 80 may only be used once with every domain AND port may not be 88 as it is used for local acme redirection
+                  proxyFrom { hostNames = [ /* list of hostnames */ ]; httpPort = null or 80; httpsPort = 443; } to proxyTo
                 '';
                 default = {};
               };
@@ -75,8 +73,8 @@ in {
                       type = types.nullOr types.string;
                       default = null;
                       description = ''
-                        Host to forward traffic to.
-                        Any hostname may only be used once
+                        Hostsnames from which will be forwarded.
+                        Any hostname port combination may only be used once.
                       '';
                     };
                     port = mkOption {
@@ -89,8 +87,7 @@ in {
                   };
                 });
               description = ''
-                { host = /* ip or fqdn */; port = 80; } to proxy to
-                This proxy implements acme.
+                { host = ip; port = 80; } to proxy to
               '';
               default = {};
             };
@@ -126,20 +123,14 @@ in {
       enable = true;
       adminAddr = "${email}";
       listen = [
-        { port = 88; }
+        { ip = "*"; port = 88; }
       ];
       user = "haproxy";
       group = "haproxy";
-      virtualHosts = [
-        {
-          hostName = "...";
-          documentRoot = "${acmeWebRoot}";
-        }
-      ];
+      servedDirs = singleton { dir = acmeWebRoot; urlPath = "/"; };
     };
 
     # create nginx on port 88 for acme if certificates is empty
-    # TODO: create internal option for paths to certificates
     security.acme.production = true;
     security.acme.directory = "${acmeKeyDir}";
     security.acme.certs = if (cfg.certificates == []) then
@@ -156,12 +147,8 @@ in {
     else {};
 
     # create preliminary certificates on boot if none exist
-    system.activationScripts.createDummyKey =
-      ''
-        ${concatMapStringsSep "\n" (f: mkKeys (concatStrings [ "systemctl start acme-selfsigned-" f ".service" ])) (uniqueValueFrom "hostNames")}
-      '';
+    system.activationScripts.createDummyKey = "/var/run/current-system/sw/bin/systemctl start acme-selfsigned-certificates.target";
 
-    # TODO: create acme preliminary before starting haproxy !!
     services.haproxy = {
       enable = true;
       config = 
@@ -172,25 +159,25 @@ in {
           http = concatMapStringsSep "\n" (port: ''
             frontend http-${toString port}
               bind :::${toString port} v4v6
+              timeout client 30000
               default_backend proxy-backend-http-${toString port}
 
             backend proxy-backend-http-${toString port}
               timeout connect 5000
               timeout check 5000
-              timeout client 30000
               timeout server 30000
+              mode http
               ${optionalString (toString port == "80") ''
                 acl url-acme-http path_beg /.well-known/acme-challenge/
                 use-server server-acme if url-acme-http
-                server server-acme http://127.0.0.1:88%[capture.req.uri]
+                server server-acme 127.0.0.1:88
               ''}
-              ${concatMapStringsSep "\n" (proxyHost: 
-                  optionalString (proxyHost.proxyFrom.httpPort == port && proxyHost.proxyFrom.hostNames != [])
-                    concatMapStringsSep "\n" (hostname: ''
-                      http-request redirect location https://%[req.hdr(host)]:${toString port}%[capture.req.uri] if { req.hdr(host) -i ${hostname} }
-                    ''
-                    ) (proxyHost.proxyFrom.hostNames)
-              ) (cfg.proxyHosts)
+              ${concatMapStringsSep "\n" (proxyHost: optionalString (proxyHost.proxyFrom.httpPort == port && proxyHost.proxyFrom.hostNames != [])
+                  concatMapStringsSep "\n" (hostname: ''
+                    http-request redirect location https://%[req.hdr(host)]:${toString proxyHost.proxyFrom.httpsPort}%[capture.req.uri] if { req.hdr(host) -i ${hostname} } !url-acme-http
+                  ''
+                  ) proxyHost.proxyFrom.hostNames
+                ) cfg.proxyHosts
               }
             ''
           ) (unique ([ 80 ] ++ (uniqueValueFrom "httpPort")));
@@ -199,6 +186,11 @@ in {
           # terminate ssl and redirect to local ip
           https = concatMapStringsSep "\n" (port: ''
             frontend https-${toString port}
+              option http-server-close
+              reqadd X-Forwarded-Proto:\ https
+              reqadd X-Forwarded-Port:\ ${toString port}
+              rspadd  Strict-Transport-Security:\ max-age=15768000
+              timeout client 30000
               default_backend proxy-backend-https-${toString port}
               ${let
                   certs = if (cfg.certificates == []) then
@@ -212,21 +204,22 @@ in {
             backend proxy-backend-https-${toString port}
               timeout connect 5000
               timeout check 5000
-              timeout client 30000
               timeout server 30000
-              ${concatMapStringsSep "\n" (proxyHost:
-                  optionalString (proxyHost.proxyFrom.hostNames != [])
-                    concatMapStringsSep "\n" (hostname:
-                      optionalString (proxyHost.proxyFrom.httpsPort == port) ''
-                        use-server server-https-${hostname}-${toString port} if { req.hdr(host) -i ${hostname} }
-                        server server-https-${hostname}-${toString port} http://${proxyHost.proxyTo.host}:${toString proxyHost.proxyTo.port}%[capture.req.uri]
-                      ''
-                    ) (proxyHost.proxyFrom.hostNames)
-                ) (cfg.proxyHosts)
+              ${concatMapStringsSep "\n" (proxyHost: optionalString (proxyHost.proxyFrom.hostNames != [])
+                  concatMapStringsSep "\n" (hostname: optionalString (proxyHost.proxyFrom.httpsPort == port) ''
+                    use-server server-https-${hostname}-${toString port} if { req.hdr(host) -i ${hostname} }
+                    server server-https-${hostname}-${toString port} ${proxyHost.proxyTo.host}:${toString proxyHost.proxyTo.port}
+                  ''
+                  ) proxyHost.proxyFrom.hostNames
+                ) cfg.proxyHosts
               }
             ''
           ) (uniqueValueFrom "httpsPort");
         in
+          ''
+            global
+              tune.ssl.default-dh-param 2048
+          '' +
           http + https;
     };
   };
