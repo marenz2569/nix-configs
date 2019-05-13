@@ -5,6 +5,7 @@
     ./admins.nix
     ./qemu.nix
     ./proxy.nix
+    ./vim.nix
   ];
 
   system.stateVersion = "19.03";
