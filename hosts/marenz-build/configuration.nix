@@ -36,9 +36,13 @@
   services.openssh = {
 	  enable = true;
     passwordAuthentication = false;
+    forwardX11 = true;
 	  ports = [ 1122 ];
   };
 
+  services.xserver.enable = true;
+
+  hardware.opengl.driSupport32Bit = true;
   virtualisation.libvirtd = {
     enable = true;
     onShutdown = "shutdown";
