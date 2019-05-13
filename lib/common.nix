@@ -22,21 +22,28 @@
 		g = "git";
 	};
 
-	programs = {
-		gnupg.agent = {
-			enable = true;
-			enableSSHSupport = true;
-		};
-		vim.defaultEditor = true;
-		zsh = {
-			enable = true;
-			ohMyZsh = {
-				enable = true;
-				theme = "agnoster";
-				plugins = [ "git" "virtualenv" "sudo" ];
-			};
-		};
-	};
+  # GPG SSH Authentication and Smartcard support
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
 
+  # Yubikey support
+	services.udev.packages = with pkgs; [
+    yubikey-personalization
+    yubioath-desktop
+  ];
+
+  programs.vim.defaultEditor = true;
+
+  programs.zsh = {
+    enable = true;
+    ohMyZsh = {
+      enable = true;
+      theme = "agnoster";
+      plugins = [ "git" "virtualenv" "sudo" ];
+    };
+  };
 
 }
