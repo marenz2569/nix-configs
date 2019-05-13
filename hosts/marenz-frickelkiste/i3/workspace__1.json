@@ -1,0 +1,21 @@
+{
+    "border": "none",
+    "current_border_width": 2,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 1079,
+       "width": 1919,
+       "x": 0,
+       "y": 0
+    },
+    "percent": 1,
+    "swallows": [
+       {
+        "class": "^Vivaldi\\-stable$",
+        "instance": "^vivaldi\\-stable$",
+        "window_role": "^browser$"
+       }
+    ],
+    "type": "con"
+}
+
