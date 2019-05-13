@@ -4,6 +4,6 @@
 
 ```shell
 ./decrypt.sh
-nixops create  fsret.nixops -d fsret
-nixops deploy -d fsret --check --include=display --force-reboot
+nixops create arkom.nixops -d arkom
+nixops deploy -d arkom --check --include=marenz-build
 ```
