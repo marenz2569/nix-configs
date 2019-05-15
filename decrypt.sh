@@ -9,7 +9,7 @@ $(cat .gpg-id | xargs -I{} gpg --export-ssh-key --with-key-data {} > authorized_
 
 cd configs
 
-$(git clean -f)
+git clean -f
 export PASSWORD_STORE_DIR=`pwd`
 
 for f in $(find . -type f -name "*.gpg" | sed -r 's/(.*).gpg/\1/') ; do
