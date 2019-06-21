@@ -123,6 +123,13 @@ in {
                         Port to forward unencrypted to.
                       '';
                     };
+                    ssl = mkOption {
+                      type = types.bool;
+                      default = false;
+                      description = ''
+                        Forward to HTTPS server.
+                      '';
+                    };
                   };
                 });
               description = ''
@@ -228,20 +235,21 @@ in {
           # terminate ssl and redirect to local ip
           https = concatMapStringsSep "\n" (port: ''
             frontend https-${toString port}
-              option http-server-close
-              reqadd X-Forwarded-Proto:\ https
-              reqadd X-Forwarded-Port:\ ${toString port}
-              rspadd Strict-Transport-Security:\ max-age=15768000
-              timeout client ${toString cfg.timeout.client}
-              default_backend proxy-backend-https-${toString port}
               ${let
                   certs = if (cfg.certificates == []) then
                     concatMapStrings (f: concatStrings [ " crt " acmeKeyDir "/" f "/full.pem" ]) (uniqueValueFrom "hostNames")
                   else
                     concatMapStrings (f: concatStrings [ " crt " f ]) cfg.certificates;
-                  in
-                    "bind :::${toString port} v4v6 ssl ${certs}"
-                }
+                in
+                  "bind :::${toString port} v4v6 ssl ${certs}"
+              }
+              option http-server-close
+              option forwardfor
+              reqadd X-Forwarded-Proto:\ https
+              reqadd X-Forwarded-Port:\ ${toString port}
+              rspadd Strict-Transport-Security:\ max-age=15768000
+              timeout client ${toString cfg.timeout.client}
+              default_backend proxy-backend-https-${toString port}
 
             backend proxy-backend-https-${toString port}
               timeout connect ${toString cfg.timeout.connect}
@@ -249,8 +257,8 @@ in {
               timeout server ${toString cfg.timeout.server}
               ${concatMapStringsSep "\n" (proxyHost: optionalString (proxyHost.proxyFrom.hostNames != [])
                   concatMapStringsSep "\n" (hostname: optionalString (proxyHost.proxyFrom.httpsPort == port) ''
-                    use-server server-https-${hostname}-${toString port} if { req.hdr(host) -i ${hostname} }
-                    server server-https-${hostname}-${toString port} ${proxyHost.proxyTo.host}:${toString proxyHost.proxyTo.port}
+                    use-server server-https-${hostname}-${toString port} if { ssl_fc_sni -i ${hostname} }
+                    server server-https-${hostname}-${toString port} ${proxyHost.proxyTo.host}:${toString proxyHost.proxyTo.port} ${optionalString proxyHost.proxyTo.ssl "ssl verify none"}
                   ''
                   ) proxyHost.proxyFrom.hostNames
                 ) cfg.proxyHosts

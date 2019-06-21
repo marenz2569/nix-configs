@@ -28,6 +28,8 @@
        				{
        					names = [
        						"vim-closetag" "vim-airline"
+                  "tagbar"
+                  "youcompleteme"
        					];
      	  			}
        			];

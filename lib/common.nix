@@ -22,6 +22,11 @@
 		g = "git";
 	};
 
+  networking.firewall = {
+    enable = true;
+    allowPing = true;
+  };
+
   # GPG SSH Authentication and Smartcard support
   services.pcscd.enable = true;
   programs.gnupg.agent = {
@@ -35,6 +40,11 @@
     yubioath-desktop
   ];
 
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+  };
+
   programs.vim.defaultEditor = true;
 
   programs.zsh = {
@@ -45,5 +55,9 @@
       plugins = [ "git" "virtualenv" "sudo" ];
     };
   };
+
+  fonts.fonts = with pkgs; [
+    powerline-fonts
+  ];
 
 }
