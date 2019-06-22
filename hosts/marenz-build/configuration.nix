@@ -4,8 +4,9 @@
   imports =
     [
       ../../lib/common.nix
+      ../../secrets/configs/hosts/marenz-build/common.nix
       ./hardware-configuration.nix
-      ./nextcloud.nix
+      ./container/common.nix
     ];
 
   qemu-user.aarch64 = true;
@@ -16,12 +17,11 @@
   boot.loader.grub.configurationLimit = 100;
 
   networking.hostName = "marenz-build";
-  networking.nat.externalInterface = "enp3s0f0";
 
   time.timeZone = "Europe/Amsterdam";
 
   environment.systemPackages = with pkgs; [
-		curl wget htop feh xorg.xkill gnupg st unzip mpv openssl file binutils-unwrapped tmux tmuxp
+		curl wget htop feh xorg.xkill gnupg st unzip mpv openssl file binutils-unwrapped tmux tmuxp bat
 		git sshpass
 		usbutils pciutils dmidecode iftop
 		gcc cmake gnumake
@@ -48,14 +48,7 @@
     onShutdown = "shutdown";
   };
 
-  my.services.proxy = {
-    enable = true;
-    proxyHosts = [
-      { proxyFrom = { hostNames = [ "cloud.bombenverleih.de" ]; httpPort = 80; httpsPort = 443; };
-        proxyTo = { host = "10.0.33.11"; port = 80; };
-      }
-    ];
-  };
+  my.services.proxy.enable = true;
 
   users.users.marenz = {
     isNormalUser = true;
