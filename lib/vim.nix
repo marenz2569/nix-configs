@@ -30,6 +30,8 @@
        						"vim-closetag" "vim-airline"
                   "tagbar"
                   "youcompleteme"
+                  "hoogle" "haskell-vim"
+                  "elm-vim"
        					];
      	  			}
        			];

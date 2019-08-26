@@ -1,0 +1,21 @@
+session_name: set
+windows:
+- layout: d3de,239x68,0,0,1
+  options:
+    automatic-rename: 'off'
+  panes:
+  - focus: 'true'
+    shell_command: htop
+  start_directory: /home/marenz
+  window_name: htop
+- layout: 7f4e,239x68,0,0[239x34,0,0{119x34,0,0,2,119x34,120,0,3},239x33,0,35,4]
+  focus: 'true'
+  options:
+    automatic-rename: 'off'
+  panes:
+  - ncpamixer
+  - alsamixer
+  - focus: 'true'
+    shell_command: ncmpcpp
+  start_directory: /home/marenz
+  window_name: audio

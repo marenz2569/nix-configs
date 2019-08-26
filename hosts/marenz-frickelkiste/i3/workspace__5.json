@@ -1,13 +1,13 @@
 {
-    "border": "normal",
+    "border": "none",
     "floating": "auto_off",
     "layout": "splith",
     "percent": 0.7,
     "type": "con",
     "nodes": [
         {
-            "border": "normal",
-            "current_border_width": 2,
+            "border": "none",
+            "current_border_width": 0,
             "floating": "auto_off",
             "geometry": {
                "height": 1036,
@@ -26,8 +26,8 @@
             "type": "con"
         },
         {
-            "border": "normal",
-            "current_border_width": 2,
+            "border": "none",
+            "current_border_width": 0,
             "floating": "auto_off",
             "geometry": {
                "height": 1036,
@@ -49,15 +49,15 @@
 }
 
 {
-    "border": "normal",
+    "border": "none",
     "floating": "auto_off",
     "layout": "tabbed",
     "percent": 0.3,
     "type": "con",
     "nodes": [
         {
-            "border": "normal",
-            "current_border_width": 2,
+            "border": "none",
+            "current_border_width": 0,
             "floating": "auto_off",
             "geometry": {
                "height": 1036,
@@ -76,8 +76,8 @@
             "type": "con"
         },
         {
-            "border": "normal",
-            "current_border_width": 2,
+            "border": "none",
+            "current_border_width": 0,
             "floating": "auto_off",
             "geometry": {
                "height": 1036,

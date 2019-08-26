@@ -47,7 +47,7 @@
 			];
 			deployment = {
 				targetHost = "2003:a:83f:f820::26";
-				targetPort = 1123;
+				targetPort = 1122;
 			};
 		};
 

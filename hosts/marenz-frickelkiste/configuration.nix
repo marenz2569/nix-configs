@@ -1,5 +1,8 @@
 { lib, config, pkgs, ... }:
 
+let
+  customPkgs = (import ../../secrets/pkgs/default.nix) { };
+in
 {
 	imports = [
     ../../lib/common.nix
@@ -10,53 +13,57 @@
 
   qemu-user.aarch64 = true;
 
-	boot.initrd.luks = {
-		gpgSupport = true;
-		devices."root-crypt".gpgCard = {
-			encryptedPass = /etc/keys/cryptkey.gpg.asc;
-			publicKey = /etc/keys/pubkey.asc;
-		};
-		devices."home-crypt".gpgCard = {
-			encryptedPass = /etc/keys/cryptkey.gpg.asc;
-			publicKey = /etc/keys/pubkey.asc;
-		};
-	};
-
   boot.extraModulePackages = with pkgs; [ linuxPackages_4_19.rtl8192eu ];
-
-  boot.extraModprobeConfig = ''
-    options iwlmvm power_scheme=1
-    options kvm_intel nested=1
-  '';
 
 	environment.systemPackages = with pkgs; 
 	let
 		st = (pkgs.st.override { conf = builtins.readFile ./st.h; });
 		ncmpcpp = (pkgs.ncmpcpp.override { outputsSupport = true; });
 	in [
+    customPkgs.vampir
+
 		curl wget htop feh xorg.xkill gnupg st unzip mpv openssl file binutils-unwrapped tmux tmuxp
+    lxterminal
 		git sshpass
-		yubikey-personalization yubioath-desktop yubikey-personalization-gui
-		vivaldi tdesktop ncmpcpp firefox-esr pavucontrol ncpamixer qpdfview thunderbird nextcloud-client gnucash gnuplot sxiv surf gimp youtube-dl
-    signal-desktop
+		yubikey-personalization yubioath-desktop yubikey-personalization-gui yubico-piv-tool
+		vivaldi ncmpcpp firefox-esr pavucontrol ncpamixer qpdfview thunderbird nextcloud-client gnucash gnuplot sxiv surf gimp youtube-dl
+    screen-message
+
 		usbutils pciutils dmidecode iftop
+    linuxPackages.perf perf-tools
+
+    password-store
+    pinentry
+
 		gcc cmake gnumake
 		avrdude #avrgcc avrbinutils avrlibc
+
 		androidStudioPackages.stable
-		texmaker texlive.combined.scheme-full
+    android-file-transfer
+    androidsdk
 		kotlin
-		python27Full python36Full
-		python27Packages.pip python36Packages.pip
-		python27Packages.virtualenv python36Packages.virtualenv
-		python36Packages.powerline powerline-fonts
+
+    gajim
+    signal-desktop
+    pidgin
+    tdesktop
+
+    kicad
+
+		texmaker texlive.combined.scheme-full
+
+		python27Full python37Full
+		python27Packages.pip python37Packages.pip
+		python27Packages.virtualenv python37Packages.virtualenv
+
+		python37Packages.powerline powerline-fonts
 		glxinfo
-    mosquitto-go-auth
     apache-directory-studio
 		mutt
     gutenprint gutenprintBin
-    linuxPackages_4_19.rtl8192eu
     wpa_supplicant_gui
     virtmanager
+    nix-index
 	];
 
   environment.etc."xdg/mimeapps.list".text = ''
@@ -89,6 +96,7 @@
   services.openssh = {
 	  enable = true;
     passwordAuthentication = false;
+    forwardX11 = true;
 	  ports = [ 1122 ];
   };
 
@@ -113,6 +121,12 @@
         name  "Local Pulse"
       }
 
+			audio_output {
+				type  "pulse"
+					name  "marenz-crafix"
+					server  "10.0.10.152"
+			}
+
       audio_output {
         type  "pulse"
         name  "Dacbert"
@@ -131,17 +145,14 @@
 
   services.printing = {
     enable = true;
+    browsing = true;
     browsedConf = ''
-      BrowsePoll hermes2.zih.tu-dresden.de
-      BrowsePoll hermes3.zih.tu-dresden.de
-      BrowsePoll padme.fsr.et.tu-dresden.de
+      BrowsePoll hermes2.zih.tu-dresden.de:631
+      BrowsePoll hermes3.zih.tu-dresden.de:631
+      BrowsePoll padme.fsr.et.tu-dresden.de:631
     '';
   };
 
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
-  };
 
 	services.xserver = {
     enable = true;
@@ -193,6 +204,16 @@
 				];
 			};
 		};
+    package = pkgs.pulseaudioFull;
+    extraModules = [ pkgs.pulseaudio-modules-bt ];
+    #configFile = pkgs.writeText "default.pa" ''
+      #load-module module-bluetooth-policy
+      #load-module module-bluetooth-discover
+      ## module fails to load with 
+      ##   module-bluez5-device.c: Failed to get device path from module arguments
+      ##   module.c: Failed to load module "module-bluez5-device" (argument: ""): initialization failed.
+      # load-module module-bluez5-device
+      # load-module module-bluez5-discover
 	};
 
   virtualisation.libvirtd = {
