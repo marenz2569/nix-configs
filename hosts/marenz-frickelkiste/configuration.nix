@@ -1,7 +1,7 @@
 { lib, config, pkgs, ... }:
 
 let
-  customPkgs = (import ../../secrets/pkgs/default.nix) { };
+  customPkgs = (import ../../secrets/configs/pkgs/default.nix) { };
 in
 {
 	imports = [
@@ -13,7 +13,8 @@ in
 
   qemu-user.aarch64 = true;
 
-  boot.extraModulePackages = with pkgs; [ linuxPackages_4_19.rtl8192eu ];
+  boot.extraModulePackages = with pkgs; [ linuxPackages_latest.rtl8192eu ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
 	environment.systemPackages = with pkgs; 
 	let
@@ -32,7 +33,7 @@ in
 		usbutils pciutils dmidecode iftop
     linuxPackages.perf perf-tools
 
-    password-store
+    pass
     pinentry
 
 		gcc cmake gnumake
@@ -40,7 +41,6 @@ in
 
 		androidStudioPackages.stable
     android-file-transfer
-    androidsdk
 		kotlin
 
     gajim

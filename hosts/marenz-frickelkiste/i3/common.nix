@@ -2,7 +2,7 @@
 
 {
   environment.etc."i3.conf".source = ./i3.conf;
-  environment.etc."i3-status.conf".source = ./i3-status.conf;
+  environment.etc."i3/i3-status.conf".source = ./i3-status.conf;
   environment.etc."i3/bri-dmenu.sh" = {
     source = ./bri-dmenu.sh;
     mode = "0755";
