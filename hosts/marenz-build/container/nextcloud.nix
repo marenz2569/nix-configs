@@ -28,6 +28,8 @@ in
       {
         imports = lib.singleton ../../../secrets/configs/hosts/marenz-build/container/nextcloud.nix;
 
+        nixpkgs.config.allowUnfree = true;
+
         networking.firewall = {
           enable = true;
           rejectPackets = true;
@@ -44,6 +46,10 @@ in
             host all all ::1/128 trust
           '';
 
+        };
+
+        services.elasticsearch = {
+          enable = true;
         };
 
         services.nextcloud = {

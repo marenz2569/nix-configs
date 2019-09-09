@@ -10,11 +10,15 @@
     ];
 
   qemu-user.aarch64 = true;
+  qemu-user.arm = true;
+  qemu-user.riscv64 = true;
 
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.configurationLimit = 100;
+
+  boot.kernel.sysctl."vm.max_map_count" = 262144;
 
   networking.hostName = "marenz-build";
 

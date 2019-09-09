@@ -12,6 +12,8 @@ in
 	];
 
   qemu-user.aarch64 = true;
+  qemu-user.arm = true;
+  qemu-user.riscv64 = true;
 
   boot.extraModulePackages = with pkgs; [ linuxPackages_latest.rtl8192eu ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
