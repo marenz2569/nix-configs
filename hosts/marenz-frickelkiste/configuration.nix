@@ -147,11 +147,14 @@ in
 
   services.printing = {
     enable = true;
+    extraConf = ''
+      ImplicitClass No
+    '';
     browsing = true;
     browsedConf = ''
       BrowsePoll hermes2.zih.tu-dresden.de:631
-      BrowsePoll hermes3.zih.tu-dresden.de:631
       BrowsePoll padme.fsr.et.tu-dresden.de:631
+      BrowsePoll pulsebert.hq.c3d2.de:631
     '';
   };
 
