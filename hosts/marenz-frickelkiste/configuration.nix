@@ -3,10 +3,10 @@
 let
   customPkgs = (import ../../secrets/configs/pkgs/default.nix) { };
 
-  mt76_pre_5_18_reboot_patch = {
-    name = "mt76_pre_5_18_reboot_patch";
-    patch = ./mt76.patch;
-  };
+  # mt76_pre_5_18_reboot_patch = {
+  #   name = "mt76_pre_5_18_reboot_patch";
+  #   patch = ./mt76.patch;
+  # };
 in
 {
   imports = [
@@ -20,7 +20,8 @@ in
 #  qemu-user.arm = true;
 #  qemu-user.riscv64 = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_5_17;
+  boot.kernelPackages = pkgs.linuxPackages_5_18;
+  # boot.kernelPackages = pkgs.linuxPackages_5_17;
   # currently broken on kernel >= 5.17 in nixos 21.11 (09.04.2022)
   # boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8192eu ];
 
@@ -39,6 +40,20 @@ in
 	let
 		st = (pkgs.st.override { conf = builtins.readFile ./st.h; });
 		ncmpcpp = (pkgs.ncmpcpp.override { outputsSupport = true; });
+		ncpamixer = (pkgs.ncpamixer.overrideAttrs (oldAttrs: {
+			version = "unstable-2021-10-21";
+
+			src = fetchFromGitHub {
+				owner = "fulhax";
+				repo = "ncpamixer";
+				rev = "4faf8c27d4de55ddc244f372cbf5b2319d0634f7";
+				sha256 = "sha256-ElbxdAaXAY0pj0oo2IcxGT+K+7M5XdCgom0XbJ9BxW4=";
+			};
+
+			configurePhase = ''
+				make PREFIX=$out USE_WIDE=1 RELEASE=1 build/Makefile
+			'';
+		}));  
 	in [
 #    customPkgs.vampir
     libimobiledevice
@@ -75,11 +90,11 @@ in
 
 		texmaker texlive.combined.scheme-full
 
-		python37Full
-		python37Packages.pip
-		python37Packages.virtualenv
+		python3Full
+		python3Packages.pip
+		python3Packages.virtualenv
 
-		python37Packages.powerline powerline-fonts
+		python3Packages.powerline powerline-fonts
 		glxinfo
     apache-directory-studio
 		mutt
@@ -194,7 +209,7 @@ in
 	# };
 
   boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 2;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
 
   services.openssh = {
@@ -203,49 +218,6 @@ in
     forwardX11 = true;
 	  ports = [ 1122 ];
   };
-
-  # services.mpd = {
-  #   enable = true;
-  #   user = "mpd";
-  #   group = "audio";
-  #   network = {
-  #     listenAddress = "127.0.0.1";
-  #     port = 6600;
-  #   };
-  #   musicDirectory = "/home/mpd/Music";
-  #   extraConfig = ''
-  #     default_permissions "read,add,control,admin"
-
-  #     input {
-  #       plugin "curl"
-  #     }
-
-  #     audio_output {
-  #       type  "pulse"
-  #       name  "Local Pulse"
-  #     }
-
-	# 		audio_output {
-	# 			type  "pulse"
-	# 				name  "marenz-crafix"
-	# 				server  "10.0.10.152"
-	# 		}
-
-  #     audio_output {
-  #       type  "pulse"
-  #       name  "Dacbert"
-  #       server  "dacbert.hq.c3d2.de"
-  #     }
-
-  #     audio_output {
-  #       type  "pulse"
-  #       name  "Pulsebert"
-  #       server  "pulsebert.hq.c3d2.de"
-  #     }
-
-  #     filesystem_charset  "UTF-8"
-  #   '';
-  # };
 
   services.printing = {
     enable = true;
@@ -302,31 +274,26 @@ in
   services.usbmuxd.enable = true;
 
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.package = pkgs.bluezFull;
   services.blueman.enable = true;
+  # hardware.bluetooth.hsphfpd.enable = true;
 
   hardware.bluetooth.settings.General.Enable = "Source,Sink,Media,Socket";
 
 	sound.enable = true;
 	hardware.pulseaudio = {
 		enable = true;
-		systemWide = true;
+    # systemWide = true;
 		zeroconf.discovery.enable = true;
-		tcp = {
-			enable = true;
-			anonymousClients = {
-        allowedIpRanges = [
-          "127.0.0.1"
-        ];
-			};
-		};
+    # tcp = {
+		# 	enable = true;
+		# 	anonymousClients = {
+    #     allowedIpRanges = [
+    #       "127.0.0.1"
+    #     ];
+		# 	};
+		# };
     package = pkgs.pulseaudioFull;
-    extraModules = let
-      bt-module = pkgs.pulseaudio-modules-bt.overrideAttrs (oldAttrs: rec {
-        cmakeFlags = [
-          "-DOFONO_HEADSET=OFF"
-        ];
-      });
-    in [ bt-module ];
 	};
 
   virtualisation.libvirtd = {

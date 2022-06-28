@@ -3,7 +3,8 @@
 {
   environment.systemPackages = with pkgs; 
   let
-    my_vim = (pkgs.vim_configurable.override { python = python3; });
+    # my_vim = (pkgs.vim_configurable.override { python = python3; });
+    my_vim = pkgs.vim_configurable;
   in [
     (my_vim.customize {
       name = "vim";
