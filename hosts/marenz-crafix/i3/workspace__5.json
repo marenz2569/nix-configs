@@ -1,0 +1,79 @@
+{
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "splith",
+    "percent": null,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "splith",
+            "percent": 0.7,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 1036,
+                       "width": 1916,
+                       "x": 0,
+                       "y": 42
+                    },
+                    "name": "Gajim",
+                    "percent": 0.3,
+                    "swallows": [
+                       {
+                        "instance": "^gajim$",
+                        "window_role": "^roster$"
+                       }
+                    ],
+                    "type": "con"
+                },
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 1036,
+                       "width": 1916,
+                       "x": 0,
+                       "y": 42
+                    },
+                    "name": "Messages - Gajim",
+                    "percent": 0.7,
+                    "swallows": [
+                       {
+                        "instance": "^gajim$",
+                        "window_role": "^messages$"
+                       }
+                    ],
+                    "type": "con"
+                }
+            ]
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1036,
+               "width": 1916,
+               "x": 2,
+               "y": 42
+            },
+            "name": "Telegram (141)",
+            "percent": 0.3,
+            "swallows": [
+               {
+                "class": "^TelegramDesktop$",
+                "instance": "^telegram\\-desktop$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+

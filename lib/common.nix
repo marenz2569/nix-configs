@@ -3,7 +3,6 @@
   
   imports = [
     ./admins.nix
-    ./qemu.nix
     ./proxy.nix
     ./vim.nix
   ];
@@ -32,6 +31,7 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+    enableExtraSocket = true;
   };
 
   # Yubikey support

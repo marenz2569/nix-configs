@@ -31,24 +31,4 @@
 				targetPort = 1122;
 			};
 		};
-
-	"marenz-frickelkiste" =
-		{ ... }:
-		{
-			imports = [
-				hosts/marenz-frickelkiste/configuration.nix
-			];
-			nix.buildMachines = [
-				{
-					hostName = "2a02:8106:208:5201:461e:a1ff:fe59:2ee8";
-					sshUser = "root";
-					system = "x86_64-linux";
-				}
-			];
-			deployment = {
-				targetHost = "2003:a:83f:f820::26";
-				targetPort = 1122;
-			};
-		};
-
 }
