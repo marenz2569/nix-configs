@@ -1,0 +1,85 @@
+{ pkgs, ... }:
+{
+  # udev rules for cargo-flash
+  services.udev.extraRules = ''
+    ACTION=="bind", SUBSYSTEM=="usb", ENV{ID_VENDOR_ID}=="1366", ENV{ID_MODEL_ID}=="1015", RUN+="${pkgs.libvirt}/bin/virsh attach-device win10-2 /etc/hostdev-segger-jlink.xml"
+    ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_VENDOR_ID}=="1366", ENV{ID_MODEL_ID}=="1015", RUN+="${pkgs.libvirt}/bin/virsh detach-device win10-2 /etc/hostdev-segger-jlink.xml"
+
+    SUBSYSTEMS=="usb", ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="2838", ENV{ID_SOFTWARE_RADIO}="1", MODE="0660", GROUP="dialout"
+
+    # Copy this file to /etc/udev/rules.d/
+    # If rules fail to reload automatically, you can refresh udev rules
+    # with the command "udevadm control --reload"
+
+    # This rules are based on the udev rules from the OpenOCD project, with unsupported probes removed.
+    # See http://openocd.org/ for more details.
+    #
+    # This file is available under the GNU General Public License v2.0 
+
+    ACTION!="add|change", GOTO="probe_rs_rules_end"
+
+    SUBSYSTEM=="gpio", MODE="0660", GROUP="plugdev", TAG+="uaccess"
+
+    SUBSYSTEM!="usb|tty|hidraw", GOTO="probe_rs_rules_end"
+
+    # Please keep this list sorted by VID:PID
+
+    # STMicroelectronics ST-LINK V1
+    ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3744", MODE="660", GROUP="plugdev", TAG+="uaccess"
+
+    # STMicroelectronics ST-LINK/V2
+    ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", MODE="660", GROUP="plugdev", TAG+="uaccess"
+
+    # STMicroelectronics ST-LINK/V2.1
+    ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3752", MODE="660", GROUP="plugdev", TAG+="uaccess"
+
+    # STMicroelectronics STLINK-V3
+    ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374d", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374e", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374f", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3753", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3754", MODE="660", GROUP="plugdev", TAG+="uaccess"
+
+    # SEGGER J-Link
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="0101", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="0102", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="0103", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="0104", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="0105", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="0107", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="0108", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1010", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1011", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1012", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1013", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1014", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1015", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1016", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1017", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1018", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1051", MODE="660", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1061", MODE="660", GROUP="plugdev", TAG+="uaccess"
+
+
+    # CMSIS-DAP compatible adapters
+    ATTRS{product}=="*CMSIS-DAP*", MODE="660", GROUP="plugdev", TAG+="uaccess"
+
+    LABEL="probe_rs_rules_end"
+  '';
+
+  # for connecting jlink to a windows vm
+  environment.etc."hostdev-segger-jlink.xml".text = ''
+    <hostdev mode='subsystem' type='usb'>
+      <source>
+        <vendor id='0x1366'/>
+        <product id='0x1015'/>
+      </source>
+    </hostdev>
+  '';
+
+  environment.systemPackages = with pkgs; [
+    cargo-flash
+    avrdude
+  ];
+}

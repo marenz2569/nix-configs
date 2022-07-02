@@ -1,9 +1,6 @@
 # Deployment
 
-## Mit NixOps
-
-```shell
-./decrypt.sh
-nixops create arkom.nixops -d arkom
-nixops deploy -d arkom --check --include=marenz-build
+# With nix flakes
+```
+nix run '.?submodules=1#marenz-frickelkiste-nixos-rebuild' switch
 ```
