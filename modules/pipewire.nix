@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   # https://nixos.wiki/wiki/PipeWire
   # https://nixos.wiki/wiki/Bluetooth
 
@@ -40,5 +40,15 @@
         ];
       }
     ];
+  };
+
+  systemd.user.services.mpris-proxy = {
+    unitConfig = {
+      Description = "Mpris proxy";
+      After = [ "network.target" "sound.target" ];
+    };
+    serviceConfig.ExecStart =
+      "${config.hardware.bluetooth.package}/bin/mpris-proxy";
+    wantedBy = [ "default.target" ];
   };
 }

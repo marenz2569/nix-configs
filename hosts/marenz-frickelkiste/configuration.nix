@@ -197,26 +197,6 @@ in {
     shell = pkgs.zsh;
   };
 
-  services.dbus.enable = true;
-
-  services.dbus.packages = let
-    pulseConf = pkgs.writeTextFile {
-      name = "pulse-bluez.conf";
-      destination = "/etc/dbus-1/system.d/pulse-bluez.conf";
-      text = ''
-        <!DOCTYPE busconfig PUBLIC
-         "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
-         "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
-        <busconfig>
-          <policy user="pulse">
-            <allow send_destination="org.bluez"/>
-            <allow send_destination="org.ofono"/>
-          </policy>
-        </busconfig>
-      '';
-    };
-  in [ pulseConf ];
-
   services.unifi = {
     enable = true;
     unifiPackage = pkgs.unifiStable;
