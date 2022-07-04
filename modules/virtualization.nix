@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   virtualisation.libvirtd = {
     enable = true;
     onShutdown = "shutdown";
@@ -7,7 +6,5 @@
 
   virtualisation.docker.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    virtmanager
-  ];
+  environment.systemPackages = with pkgs; [ virtmanager ];
 }

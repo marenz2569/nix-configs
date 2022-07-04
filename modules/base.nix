@@ -1,5 +1,4 @@
-{ lib, pkgs, ... }:
-{
+{ lib, pkgs, ... }: {
   # NIX configuration
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''
@@ -7,10 +6,8 @@
     extra-sandbox-paths = /nix/var/cache/ccache
   '';
   nix.autoOptimiseStore = true;
-  nix.binaryCaches = [
-    "https://dump-dvb.cachix.org"
-    "https://nix-serve.hq.c3d2.de"
-  ];
+  nix.binaryCaches =
+    [ "https://dump-dvb.cachix.org" "https://nix-serve.hq.c3d2.de" ];
   nix.binaryCachePublicKeys = [
     "dump-dvb.cachix.org-1:+Dq7gqpQG4YlLA2X3xJsG1v3BrlUGGpVtUKWk0dTyUU="
     "nix-serve.hq.c3d2.de:KZRGGnwOYzys6pxgM8jlur36RmkJQ/y8y62e52fj1ps="
@@ -19,16 +16,14 @@
   nixpkgs.config.allowUnfree = true;
 
   # SSH configuration
-  users.users.root.openssh.authorizedKeys.keyFiles = [
-    ../keys/ssh/marenz1
-    ../keys/ssh/marenz1
-  ];
+  users.users.root.openssh.authorizedKeys.keyFiles =
+    [ ../keys/ssh/marenz1 ../keys/ssh/marenz1 ];
 
   services.openssh = {
-	  enable = true;
+    enable = true;
     passwordAuthentication = false;
     forwardX11 = true;
-	  ports = [ 1122 ];
+    ports = [ 1122 ];
   };
 
   # SOPS configuration
@@ -46,7 +41,7 @@
     nssmdns = true;
   };
 
-	time.timeZone = "Europe/Berlin";
+  time.timeZone = "Europe/Berlin";
 
   # GPG SSH Authentication and Smartcard support
   services.pcscd.enable = true;
@@ -57,7 +52,7 @@
   };
 
   # Yubikey support
-	services.udev.packages = with pkgs; [
+  services.udev.packages = with pkgs; [
     yubikey-personalization
     yubioath-desktop
   ];
@@ -72,20 +67,18 @@
     };
   };
 
-	i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
   console.useXkbConfig = true;
 
-	environment.shellAliases = {
-		l = "ls -laFh";
-		ll = "ls -lFh";
-		cl = "clear";
-		v = "vim";
-		g = "git";
-	};
+  environment.shellAliases = {
+    l = "ls -laFh";
+    ll = "ls -lFh";
+    cl = "clear";
+    v = "vim";
+    g = "git";
+  };
 
-  fonts.fonts = with pkgs; [
-    powerline-fonts
-  ];
+  fonts.fonts = with pkgs; [ powerline-fonts ];
 
   # VIM configuration
   programs.vim.defaultEditor = true;
@@ -110,17 +103,17 @@
         hi def link MyTodo Todo
       '';
       vimrcConfig.vam.knownPlugins = pkgs.vimPlugins;
-      vimrcConfig.vam.pluginDictionaries = [
-        {
-          names = [
-            "vim-closetag" "vim-airline"
-            "tagbar"
-            "YouCompleteMe"
-            "hoogle" "haskell-vim"
-            "elm-vim"
-          ];
-        }
-      ];
+      vimrcConfig.vam.pluginDictionaries = [{
+        names = [
+          "vim-closetag"
+          "vim-airline"
+          "tagbar"
+          "YouCompleteMe"
+          "hoogle"
+          "haskell-vim"
+          "elm-vim"
+        ];
+      }];
     })
     sops
     git

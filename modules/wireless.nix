@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   sops.secrets."wpa_supplicant.conf" = {
     format = "binary";
     sopsFile = ../secrets/wpa_supplicant.conf;
@@ -19,5 +18,6 @@
 
   hardware.wirelessRegulatoryDatabase = true;
 
-  environment.etc."certs/TUD-CACert.pem".text = builtins.readFile ./TUD-CACert.pem;
+  environment.etc."certs/TUD-CACert.pem".text =
+    builtins.readFile ./TUD-CACert.pem;
 }

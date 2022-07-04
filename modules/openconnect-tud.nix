@@ -10,22 +10,22 @@ let
     done
   '';
 
-  openconnect-monitor-script = pkgs.writeScriptBin "openconnect-monitor-script" ''
-    #!/usr/bin/env bash
+  openconnect-monitor-script =
+    pkgs.writeScriptBin "openconnect-monitor-script" ''
+      #!/usr/bin/env bash
 
-    for (( ; ; ))
-    do
-      ROUTE_STATUS="$(ip r g 141.30.3.108 2> /dev/null | head -n1 | grep tun | wc -l)"
+      for (( ; ; ))
+      do
+        ROUTE_STATUS="$(ip r g 141.30.3.108 2> /dev/null | head -n1 | grep tun | wc -l)"
 
-      if [ $ROUTE_STATUS -eq 1 ]; then
-        echo "Restarting openconnect-client.service as its routes are fucked up"
-        systemctl restart openconnect-client.service
-      fi
-      sleep 1
-    done
-  '';
-in
-{
+        if [ $ROUTE_STATUS -eq 1 ]; then
+          echo "Restarting openconnect-client.service as its routes are fucked up"
+          systemctl restart openconnect-client.service
+        fi
+        sleep 1
+      done
+    '';
+in {
   sops.secrets."openconnect-tud.pass" = {
     format = "binary";
     sopsFile = ../secrets/openconnect-tud.pass;
@@ -37,15 +37,24 @@ in
     requires = [ "network-online.target" ];
     requiredBy = [ "openconnect-monitor.service" ];
     after = [ "network.target" "network-online.target" ];
-#		wantedBy = [ "network-online.target" ];
-    path = with pkgs; [ bash openconnect-client-script openconnect unixtools.netstat unixtools.ifconfig unixtools.route gawk ];
+    #		wantedBy = [ "network-online.target" ];
+    path = with pkgs; [
+      bash
+      openconnect-client-script
+      openconnect
+      unixtools.netstat
+      unixtools.ifconfig
+      unixtools.route
+      gawk
+    ];
     script = "exec openconnect-client-script &";
     serviceConfig.Type = "forking";
   };
 
   systemd.services.openconnect-monitor = {
     enable = true;
-    description = "Kills openconnect if it deleted the route to the server on reconnect";
+    description =
+      "Kills openconnect if it deleted the route to the server on reconnect";
     requires = [ "openconnect-client.service" ];
     requiredBy = [ "openconnect-client.service" ];
     after = [ "openconnect-client.service" ];

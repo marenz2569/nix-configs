@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   # udev rules for cargo-flash
   services.udev.extraRules = ''
     ACTION=="bind", SUBSYSTEM=="usb", ENV{ID_VENDOR_ID}=="1366", ENV{ID_MODEL_ID}=="1015", RUN+="${pkgs.libvirt}/bin/virsh attach-device win10-2 /etc/hostdev-segger-jlink.xml"
@@ -78,8 +77,5 @@
     </hostdev>
   '';
 
-  environment.systemPackages = with pkgs; [
-    cargo-flash
-    avrdude
-  ];
+  environment.systemPackages = with pkgs; [ cargo-flash avrdude ];
 }

@@ -2,12 +2,8 @@
 
 let
   # customPkgs = (import ../../secrets/configs/pkgs/default.nix) { };
-in
-{
-  imports = [
-    ./i3/common.nix
-		./hardware-configuration.nix
-	];
+in {
+  imports = [ ./i3/common.nix ./hardware-configuration.nix ];
 
   system.stateVersion = "19.03";
 
@@ -17,70 +13,106 @@ in
 
   sops.defaultSopsFile = ../../secrets/marenz-frickelkiste/secrets.yaml;
 
-	environment.systemPackages = with pkgs; 
-	let
-		st = (pkgs.st.override { conf = builtins.readFile ./st.h; });
-		ncmpcpp = (pkgs.ncmpcpp.override { outputsSupport = true; });
-		ncpamixer = (pkgs.ncpamixer.overrideAttrs (oldAttrs: {
-			version = "unstable-2021-10-21";
+  environment.systemPackages = with pkgs;
+    let
+      st = (pkgs.st.override { conf = builtins.readFile ./st.h; });
+      ncmpcpp = (pkgs.ncmpcpp.override { outputsSupport = true; });
+      ncpamixer = (pkgs.ncpamixer.overrideAttrs (oldAttrs: {
+        version = "unstable-2021-10-21";
 
-			src = fetchFromGitHub {
-				owner = "fulhax";
-				repo = "ncpamixer";
-				rev = "4faf8c27d4de55ddc244f372cbf5b2319d0634f7";
-				sha256 = "sha256-ElbxdAaXAY0pj0oo2IcxGT+K+7M5XdCgom0XbJ9BxW4=";
-			};
+        src = fetchFromGitHub {
+          owner = "fulhax";
+          repo = "ncpamixer";
+          rev = "4faf8c27d4de55ddc244f372cbf5b2319d0634f7";
+          sha256 = "sha256-ElbxdAaXAY0pj0oo2IcxGT+K+7M5XdCgom0XbJ9BxW4=";
+        };
 
-			configurePhase = ''
-				make PREFIX=$out USE_WIDE=1 RELEASE=1 build/Makefile
-			'';
-		}));  
-	in [
-#    customPkgs.vampir
-    libimobiledevice
-    ifuse
+        configurePhase =
+          "	make PREFIX=$out USE_WIDE=1 RELEASE=1 build/Makefile\n";
+      }));
+    in [
+      #    customPkgs.vampir
+      libimobiledevice
+      ifuse
 
-    squashfsTools
+      squashfsTools
 
-		curl wget htop feh xorg.xkill gnupg st unzip mpv openssl file binutils-unwrapped tmux tmuxp
-    lxterminal
-		sshpass
-		yubikey-personalization yubioath-desktop yubikey-personalization-gui yubico-piv-tool
-		vivaldi ncmpcpp firefox-esr pavucontrol ncpamixer qpdfview thunderbird nextcloud-client gnucash gnuplot sxiv surf gimp youtube-dl
-    screen-message
+      curl
+      wget
+      htop
+      feh
+      xorg.xkill
+      gnupg
+      st
+      unzip
+      mpv
+      openssl
+      file
+      binutils-unwrapped
+      tmux
+      tmuxp
+      lxterminal
+      sshpass
+      yubikey-personalization
+      yubioath-desktop
+      yubikey-personalization-gui
+      yubico-piv-tool
+      vivaldi
+      ncmpcpp
+      firefox-esr
+      pavucontrol
+      ncpamixer
+      qpdfview
+      thunderbird
+      nextcloud-client
+      gnucash
+      gnuplot
+      sxiv
+      surf
+      gimp
+      youtube-dl
+      screen-message
 
-		usbutils pciutils dmidecode iftop
-    linuxPackages.perf perf-tools
+      usbutils
+      pciutils
+      dmidecode
+      iftop
+      linuxPackages.perf
+      perf-tools
 
-    pass
-    pinentry
+      pass
+      pinentry
 
-		gcc cmake gnumake
+      gcc
+      cmake
+      gnumake
 
-    #androidStudioPackages.stable
-    android-file-transfer
-		kotlin
+      #androidStudioPackages.stable
+      android-file-transfer
+      kotlin
 
-    gajim
-    signal-desktop
-    pidgin
-    tdesktop
+      gajim
+      signal-desktop
+      pidgin
+      tdesktop
 
-    #kicad
+      #kicad
 
-		texmaker texlive.combined.scheme-full
+      texmaker
+      texlive.combined.scheme-full
 
-		python3Full
-		python3Packages.pip
-		python3Packages.virtualenv
+      python3Full
+      python3Packages.pip
+      python3Packages.virtualenv
 
-		python3Packages.powerline powerline-fonts
-		glxinfo
-    apache-directory-studio
-		mutt
-    wpa_supplicant_gui
-    nix-index
-	];
+      python3Packages.powerline
+      powerline-fonts
+      glxinfo
+      apache-directory-studio
+      mutt
+      wpa_supplicant_gui
+      nix-index
+    ];
 
   environment.etc."xdg/mimeapps.list".text = ''
     [Default Applications]
@@ -100,7 +132,6 @@ in
   boot.loader.systemd-boot.configurationLimit = 2;
   boot.loader.efi.canTouchEfiVariables = true;
 
-
   services.printing = {
     enable = true;
     extraConf = ''
@@ -110,28 +141,28 @@ in
     browsedConf = ''
       BrowsePoll padme.fsr.et.tu-dresden.de:631
     '';
-    drivers = with pkgs; [ gutenprint hplip splix samsung-unified-linux-driver ];
+    drivers = with pkgs; [
+      gutenprint
+      hplip
+      splix
+      samsung-unified-linux-driver
+    ];
   };
 
-
-	services.xserver = {
+  services.xserver = {
     enable = true;
     layout = "de";
     xkbVariant = "dvorak";
     libinput = {
       enable = true;
-      touchpad = {
-        tapping = false;
-      };
+      touchpad = { tapping = false; };
     };
     displayManager.lightdm.enable = true;
     displayManager.defaultSession = "none+i3";
     windowManager.i3 = {
       enable = true;
       configFile = "/etc/i3.conf";
-      extraPackages = with pkgs; [
-        dmenu i3status i3lock
-      ];
+      extraPackages = with pkgs; [ dmenu i3status i3lock ];
     };
     wacom.enable = true;
   };
@@ -139,55 +170,57 @@ in
   hardware.opengl.driSupport32Bit = true;
 
   systemd.services = {
-		user-backlight-brightness-permissions = {
-			enable = true;
-			wantedBy = [ "default.target" ];
-			description = "Change permissions of backlight brightness hardware class";
-			serviceConfig = {
-				Type = "oneshot";
-				User = "root";
-				ExecStart = "/run/current-system/sw/bin/chmod 666 /sys/class/backlight/amdgpu_bl0/brightness";
-			};
-		};
-	};
+    user-backlight-brightness-permissions = {
+      enable = true;
+      wantedBy = [ "default.target" ];
+      description = "Change permissions of backlight brightness hardware class";
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+        ExecStart =
+          "/run/current-system/sw/bin/chmod 666 /sys/class/backlight/amdgpu_bl0/brightness";
+      };
+    };
+  };
 
   services.usbmuxd.enable = true;
 
-  users.groups.wireshark.name = "wireshark"; 
+  users.groups.wireshark.name = "wireshark";
 
   users.users.marenz = {
     isNormalUser = true;
     uid = 1000;
     home = "/home/marenz";
     createHome = true;
-    extraGroups = [ "wheel" "audio" "libvirtd" "wireshark" "docker" "dialout" "plugdev" ];
+    extraGroups =
+      [ "wheel" "audio" "libvirtd" "wireshark" "docker" "dialout" "plugdev" ];
     shell = pkgs.zsh;
   };
 
   services.dbus.enable = true;
 
-  services.dbus.packages = let 
-    pulseConf = pkgs.writeTextFile
-      { name = "pulse-bluez.conf";
-        destination = "/etc/dbus-1/system.d/pulse-bluez.conf";
-        text = ''
-          <!DOCTYPE busconfig PUBLIC
-           "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
-           "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
-          <busconfig>
-            <policy user="pulse">
-              <allow send_destination="org.bluez"/>
-              <allow send_destination="org.ofono"/>
-            </policy>
-          </busconfig>
-        '';
-      };
+  services.dbus.packages = let
+    pulseConf = pkgs.writeTextFile {
+      name = "pulse-bluez.conf";
+      destination = "/etc/dbus-1/system.d/pulse-bluez.conf";
+      text = ''
+        <!DOCTYPE busconfig PUBLIC
+         "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+         "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+        <busconfig>
+          <policy user="pulse">
+            <allow send_destination="org.bluez"/>
+            <allow send_destination="org.ofono"/>
+          </policy>
+        </busconfig>
+      '';
+    };
   in [ pulseConf ];
 
   services.unifi = {
-      enable = true;
-        unifiPackage = pkgs.unifiStable;
-      };
+    enable = true;
+    unifiPackage = pkgs.unifiStable;
+  };
 
   programs.ccache.enable = true;
 }
