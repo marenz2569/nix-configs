@@ -9,8 +9,6 @@
     extraConf = ''
       pmf=1
       bgscan="simple:30:-70:3600"
-      ctrl_interface=/run/wpa_supplicant
-      ctrl_interface_group=wheel
     '';
     userControlled.enable = true;
     extraCmdArgs = "-c/run/secrets/wpa_supplicant.conf";
