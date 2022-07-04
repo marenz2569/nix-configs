@@ -8,13 +8,12 @@
        "x": 0,
        "y": 0
     },
-    "name": "tmuxp",
+    "marks": [],
     "percent": 1,
     "swallows": [
        {
-        "class": "^st\\-256color$",
-        "instance": "^st\\-256color$",
-        "title": "^tmuxp$"
+       "class": "^st\\-256color$",
+       "instance": "^st\\-256color$"
        }
     ],
     "type": "con"
