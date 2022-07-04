@@ -153,29 +153,6 @@ in
 
   services.usbmuxd.enable = true;
 
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.package = pkgs.bluezFull;
-  services.blueman.enable = true;
-  # hardware.bluetooth.hsphfpd.enable = true;
-
-  hardware.bluetooth.settings.General.Enable = "Source,Sink,Media,Socket";
-
-	sound.enable = true;
-	hardware.pulseaudio = {
-		enable = true;
-    # systemWide = true;
-		zeroconf.discovery.enable = true;
-    # tcp = {
-		# 	enable = true;
-		# 	anonymousClients = {
-    #     allowedIpRanges = [
-    #       "127.0.0.1"
-    #     ];
-		# 	};
-		# };
-    package = pkgs.pulseaudioFull;
-	};
-
   users.groups.wireshark.name = "wireshark"; 
 
   users.users.marenz = {

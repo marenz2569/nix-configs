@@ -30,6 +30,7 @@
         ./modules/microcontroller.nix
         ./modules/openconnect-tud.nix
         ./modules/openvpn-bad5.nix
+        ./modules/pipewire.nix
         ./modules/sdr.nix
         ./modules/virtualization.nix
         ./modules/wireless.nix
