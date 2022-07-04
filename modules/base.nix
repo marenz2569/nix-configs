@@ -15,6 +15,8 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  programs.ccache.enable = true;
+
   # SSH configuration
   users.users.root.openssh.authorizedKeys.keyFiles =
     [ ../keys/ssh/marenz1 ../keys/ssh/marenz1 ];

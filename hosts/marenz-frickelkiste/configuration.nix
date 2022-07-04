@@ -201,6 +201,4 @@ in {
     enable = true;
     unifiPackage = pkgs.unifiStable;
   };
-
-  programs.ccache.enable = true;
 }
