@@ -3,7 +3,8 @@
 let
   # customPkgs = (import ../../secrets/configs/pkgs/default.nix) { };
 in {
-  imports = [ ./i3/common.nix ./hardware-configuration.nix ];
+  imports =
+    [ ./i3/common.nix ./hardware-configuration.nix ./wireguard-dump-dvb.nix ];
 
   system.stateVersion = "19.03";
 
