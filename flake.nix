@@ -35,6 +35,7 @@
           ./modules/sdr.nix
           ./modules/virtualization.nix
           ./modules/wireless.nix
+          ./modules/xray-sensor.nix
           sops-nix.nixosModules.sops
         ];
       };
