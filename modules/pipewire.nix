@@ -1,4 +1,15 @@
-{ pkgs, config, ... }: {
+{ lib, pkgs, config, ... }:
+let
+  default-pipewire-pulse = lib.importJSON (pkgs.path
+    + "/nixos/modules/services/desktops/pipewire/daemon/pipewire-pulse.conf.json");
+  libpipewire-module-zeroconf-discover = {
+    "name" = "libpipewire-module-zeroconf-discover";
+  };
+  pipewire-pulse = default-pipewire-pulse // {
+    "context.modules" = default-pipewire-pulse."context.modules"
+      ++ lib.singleton libpipewire-module-zeroconf-discover;
+  };
+in {
   # https://nixos.wiki/wiki/PipeWire
   # https://nixos.wiki/wiki/Bluetooth
 
@@ -13,6 +24,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    config.pipewire-pulse = pipewire-pulse;
     wireplumber.enable = false;
     media-session.enable = true;
     media-session.config.bluez-monitor.rules = [
