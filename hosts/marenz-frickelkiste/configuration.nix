@@ -1,8 +1,6 @@
-{ lib, config, pkgs, ... }:
+{ config, pkgs, ... }:
 
-let
-  # customPkgs = (import ../../secrets/configs/pkgs/default.nix) { };
-in {
+{
   imports =
     [ ./i3/common.nix ./hardware-configuration.nix ./wireguard-dump-dvb.nix ];
 
@@ -18,7 +16,7 @@ in {
     let
       st = (pkgs.st.override { conf = builtins.readFile ./st.h; });
       ncmpcpp = (pkgs.ncmpcpp.override { outputsSupport = true; });
-      ncpamixer = (pkgs.ncpamixer.overrideAttrs (oldAttrs: {
+      ncpamixer = (pkgs.ncpamixer.overrideAttrs (_oldAttrs: {
         version = "unstable-2021-10-21";
 
         src = fetchFromGitHub {

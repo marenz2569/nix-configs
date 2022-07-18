@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ ... }: {
   sops.secrets."wpa_supplicant.conf" = {
     format = "binary";
     sopsFile = ../secrets/wpa_supplicant.conf;
