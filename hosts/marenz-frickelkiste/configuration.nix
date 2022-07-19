@@ -95,7 +95,7 @@
       pidgin
       tdesktop
 
-      #kicad
+      kicad
 
       texmaker
       texlive.combined.scheme-full
@@ -111,6 +111,48 @@
       mutt
       wpa_supplicant_gui
       nix-index
+
+      bat
+      bind
+      cachix
+      cargo
+      cargo-flash
+      clang-tools
+      direnv
+      discord
+      element-desktop
+      gajim
+      gdb
+      graphviz
+      hdfview
+      jetbrains.idea-community
+      killall
+      libreoffice
+      lm_sensors
+      lsof
+      ltrace
+      lxterminal
+      lynx
+      mumble
+      nmap
+      pass
+      picocom
+      pinentry
+      qucs
+      rdesktop
+      rustup
+      screen-message
+      scrot
+      spotify
+      subversion
+      tig
+      tigervnc
+      traceroute
+      whois
+      wireshark-qt
+      yubico-piv-tool
+      zoom
+      zotero
     ];
 
   environment.etc."xdg/mimeapps.list".text = ''
