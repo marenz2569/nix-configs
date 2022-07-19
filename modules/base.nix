@@ -90,7 +90,7 @@
       name = "vim";
       vimrcConfig.customRC = ''
         syntax on
-        colorscheme elflord
+        colorscheme default
         set number
 
         set autoindent
