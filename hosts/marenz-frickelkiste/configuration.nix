@@ -115,7 +115,6 @@
       bat
       bind
       cachix
-      cargo
       cargo-flash
       clang-tools
       direnv
