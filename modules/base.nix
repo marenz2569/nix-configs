@@ -1,10 +1,10 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   # NIX configuration
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
-    extra-sandbox-paths = /nix/var/cache/ccache
   '';
+  nix.settings.extra-sandbox-paths = [ "${config.programs.ccache.cacheDir}" ];
   nix.autoOptimiseStore = true;
   nix.binaryCaches =
     [ "https://dump-dvb.cachix.org" "https://nix-serve.hq.c3d2.de" ];
