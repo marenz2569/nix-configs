@@ -7,9 +7,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    secrets = {
+      url = "./secrets";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, sops-nix, secrets, ... }@attrs:
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
@@ -24,7 +28,7 @@
 
       nixosConfigurations.marenz-frickelkiste = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+        specialArgs = attrs;
         modules = [
           ./hosts/marenz-frickelkiste/configuration.nix
           ./modules/base.nix

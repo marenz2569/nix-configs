@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, secrets, ... }:
 
 {
   imports =
@@ -10,7 +10,7 @@
   boot.kernelPackages = pkgs.linuxPackages_5_18;
   boot.extraModulePackages = with config.boot.kernelPackages; [ ];
 
-  sops.defaultSopsFile = ../../secrets/marenz-frickelkiste/secrets.yaml;
+  sops.defaultSopsFile = "${secrets}/marenz-frickelkiste/secrets.yaml";
 
   environment.systemPackages = with pkgs;
     let

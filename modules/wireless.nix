@@ -1,7 +1,7 @@
-{ ... }: {
+{ config, secrets, ... }: {
   sops.secrets."wpa_supplicant.conf" = {
     format = "binary";
-    sopsFile = ../secrets/wpa_supplicant.conf;
+    sopsFile = "${secrets}/wpa_supplicant.conf";
   };
 
   networking.supplicant."wlp3s0" = {
@@ -11,7 +11,7 @@
       bgscan="simple:30:-70:3600"
     '';
     userControlled.enable = true;
-    extraCmdArgs = "-c/run/secrets/wpa_supplicant.conf";
+    extraCmdArgs = "-c${config.sops.secrets."wpa_supplicant.conf".path}";
   };
 
   hardware.wirelessRegulatoryDatabase = true;
