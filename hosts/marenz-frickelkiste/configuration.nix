@@ -26,7 +26,6 @@
 
   environment.systemPackages = with pkgs;
     let
-      st = (pkgs.st.override { conf = builtins.readFile ./st.h; });
       ncmpcpp = (pkgs.ncmpcpp.override { outputsSupport = true; });
       ncpamixer = (pkgs.ncpamixer.overrideAttrs (_oldAttrs: {
         version = "unstable-2021-10-21";
@@ -57,10 +56,7 @@
       curl
       wget
       htop
-      feh
-      xorg.xkill
       gnupg
-      st
       unzip
       mpv
       openssl
@@ -68,27 +64,8 @@
       binutils-unwrapped
       tmux
       tmuxp
-      lxterminal
       sshpass
-      yubikey-personalization
-      yubioath-desktop
-      yubikey-personalization-gui
-      yubico-piv-tool
-      vivaldi
-      ncmpcpp
-      firefox-esr
-      pavucontrol
       ncpamixer
-      qpdfview
-      thunderbird
-      nextcloud-client
-      gnucash
-      gnuplot
-      sxiv
-      surf
-      gimp
-      youtube-dl
-      screen-message
 
       usbutils
       pciutils
@@ -98,6 +75,7 @@
       perf-tools
 
       pass
+      youtube-dl
 
       gcc
       cmake
@@ -107,14 +85,6 @@
       android-file-transfer
       kotlin
 
-      gajim
-      signal-desktop
-      pidgin
-      tdesktop
-
-      kicad
-
-      texmaker
       texlive.combined.scheme-full
 
       python3Full
@@ -123,10 +93,6 @@
 
       python3Packages.powerline
       powerline-fonts
-      glxinfo
-      apache-directory-studio
-      mutt
-      wpa_supplicant_gui
       nix-index
 
       bat
@@ -135,39 +101,23 @@
       cargo-flash
       clang-tools
       direnv
-      discord
-      element-desktop
-      gajim
       gdb
       graphviz
-      hdfview
-      jetbrains.idea-community
       killall
       libreoffice
       lm_sensors
       lsof
       ltrace
-      lxterminal
       lynx
-      mumble
       nmap
       pass
       picocom
-      qucs
-      rdesktop
       rustup
-      screen-message
-      scrot
-      spotify
       subversion
       tig
-      tigervnc
       traceroute
       whois
-      wireshark-qt
-      yubico-piv-tool
-      zoom
-      zotero
+      nixfmt
     ];
 
   environment.etc."xdg/mimeapps.list".text = ''
@@ -203,25 +153,6 @@
       splix
       samsung-unified-linux-driver
     ];
-  };
-
-  services.xserver = {
-    enable = true;
-    layout = "de";
-    xkbVariant = "dvorak";
-    libinput = {
-      enable = true;
-      touchpad = { tapping = false; };
-    };
-    updateDbusEnvironment = true;
-    displayManager.lightdm.enable = true;
-    displayManager.defaultSession = "none+i3";
-    windowManager.i3 = {
-      enable = true;
-      configFile = "/etc/i3.conf";
-      extraPackages = with pkgs; [ dmenu i3status i3lock ];
-    };
-    wacom.enable = true;
   };
 
   hardware.opengl.driSupport32Bit = true;

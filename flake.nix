@@ -27,12 +27,10 @@
             nixos-rebuild --flake ${self}?submodules=1#marenz-frickelkiste -L $@
           '';
       };
-
     in {
-
-      package.x86_64-linux.default =
-        self.nixosConfiguration.marenz-frickelkiste.config.system.build.vm;
-      packages.x86_64-linux = packages;
+      packages.x86_64-linux = packages // (nixpkgs.lib.mapAttrs' (name: value:
+        nixpkgs.lib.nameValuePair (name + "-vm") (value.config.system.build.vm))
+        self.nixosConfigurations);
 
       nixosConfigurations.marenz-frickelkiste = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -40,6 +38,7 @@
         modules = [
           ./hosts/marenz-frickelkiste/configuration.nix
           ./modules/base.nix
+          ./modules/graphical.nix
           ./modules/microcontroller.nix
           ./modules/openconnect-tud.nix
           ./modules/openvpn-bad5.nix
