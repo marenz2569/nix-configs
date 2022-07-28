@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -15,11 +16,15 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
-  outputs = { self, nixpkgs, sops-nix, nixos-hardware, ... }@attrs:
+  outputs =
+    { self, nixpkgs, nixpkgs-unstable, sops-nix, nixos-hardware, ... }@attrs:
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-      overlays = import ./overlays { };
+      overlays = import ./overlays {
+        inherit nixpkgs-unstable;
+        system = "x86_64-linux";
+      };
 
       packages = (overlays { } pkgs) // {
         marenz-frickelkiste-nixos-rebuild =
