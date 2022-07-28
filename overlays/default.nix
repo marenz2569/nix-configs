@@ -1,5 +1,6 @@
 { ... }:
 _final: prev: {
+  gxs700 = prev.python3Packages.callPackage ./gxs700 { };
   ncpamixer = prev.ncpamixer.overrideAttrs (_oldAttrs: {
     version = "unstable-2021-10-21";
 
