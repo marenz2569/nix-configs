@@ -60,11 +60,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-f5XPwZLckVjmsr/6jadhg/IOsnhRA6byQzyufyEJj1A=",
-        "path": "/nix/store/fs5a4351avyd4xbybk32lzf4nd4mgwsh-source/secrets",
+        "path": "/nix/store/kxwfc0lvqg5ys7yr6mx8wpq5s2laihi2-source/secrets",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/fs5a4351avyd4xbybk32lzf4nd4mgwsh-source/secrets",
+        "path": "/nix/store/kxwfc0lvqg5ys7yr6mx8wpq5s2laihi2-source/secrets",
         "type": "path"
       }
     },
