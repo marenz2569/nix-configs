@@ -1,4 +1,4 @@
-{ stdenv, lib, bash, makeWrapper, fontconfig, freetype, dbus, zlib }:
+{ stdenv, lib, makeWrapper, fontconfig, freetype, dbus, zlib }:
 let rpath = lib.makeLibraryPath [ fontconfig freetype dbus zlib ];
 in stdenv.mkDerivation rec {
   pname = "vampir";

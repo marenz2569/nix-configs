@@ -15,7 +15,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
-  outputs = { self, nixpkgs, sops-nix, secrets, nixos-hardware, ... }@attrs:
+  outputs = { self, nixpkgs, sops-nix, nixos-hardware, ... }@attrs:
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
 

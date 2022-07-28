@@ -1,5 +1,5 @@
 { ... }:
-final: prev: {
+_final: prev: {
   ncpamixer = prev.ncpamixer.overrideAttrs (_oldAttrs: {
     version = "unstable-2021-10-21";
 
