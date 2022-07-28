@@ -11,9 +11,11 @@
       url = "./secrets";
       flake = false;
     };
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
-  outputs = { self, nixpkgs, sops-nix, secrets, ... }@attrs:
+  outputs = { self, nixpkgs, sops-nix, secrets, nixos-hardware, ... }@attrs:
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
@@ -41,6 +43,7 @@
           ./modules/wireless.nix
           ./modules/xray-sensor.nix
           sops-nix.nixosModules.sops
+          nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
         ];
       };
     };

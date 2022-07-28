@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1658401027,
+        "narHash": "sha256-z/sDfzsFOoWNO9nZGfxDCNjHqXvSVZLDBDSgzr9qDXE=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "83009edccc2e24afe3d0165ed98b60ff7471a5f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1658863075,
@@ -34,6 +49,7 @@
     },
     "root": {
       "inputs": {
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "secrets": "secrets",
         "sops-nix": "sops-nix"
@@ -44,11 +60,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-+fqnCvFtoYsq/Bui81gL/FAzuNldZqWd4xDbvbndsJo=",
-        "path": "/nix/store/idvygh7gy8gbk5sqc5n3vlzi187h55fc-source/secrets",
+        "path": "/nix/store/f8s13q8wr83cl29mcqa650z2l84wkqc4-source/secrets",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/idvygh7gy8gbk5sqc5n3vlzi187h55fc-source/secrets",
+        "path": "/nix/store/f8s13q8wr83cl29mcqa650z2l84wkqc4-source/secrets",
         "type": "path"
       }
     },
