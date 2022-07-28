@@ -98,7 +98,6 @@
       perf-tools
 
       pass
-      pinentry
 
       gcc
       cmake
@@ -154,7 +153,6 @@
       nmap
       pass
       picocom
-      pinentry
       qucs
       rdesktop
       rustup
@@ -215,6 +213,7 @@
       enable = true;
       touchpad = { tapping = false; };
     };
+    updateDbusEnvironment = true;
     displayManager.lightdm.enable = true;
     displayManager.defaultSession = "none+i3";
     windowManager.i3 = {

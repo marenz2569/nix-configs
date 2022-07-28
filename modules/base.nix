@@ -51,6 +51,7 @@
     enable = true;
     enableSSHSupport = true;
     enableExtraSocket = true;
+    pinentryFlavor = "gnome3";
   };
 
   # Yubikey support
