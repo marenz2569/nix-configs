@@ -59,12 +59,12 @@
       "flake": false,
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-+fqnCvFtoYsq/Bui81gL/FAzuNldZqWd4xDbvbndsJo=",
-        "path": "/nix/store/f8s13q8wr83cl29mcqa650z2l84wkqc4-source/secrets",
+        "narHash": "sha256-f5XPwZLckVjmsr/6jadhg/IOsnhRA6byQzyufyEJj1A=",
+        "path": "/nix/store/0ha5p74v5mafi00na9fav7p7n9n89rrd-source/secrets",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/f8s13q8wr83cl29mcqa650z2l84wkqc4-source/secrets",
+        "path": "/nix/store/0ha5p74v5mafi00na9fav7p7n9n89rrd-source/secrets",
         "type": "path"
       }
     },

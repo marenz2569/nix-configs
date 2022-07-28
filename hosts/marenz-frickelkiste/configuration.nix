@@ -12,6 +12,18 @@
 
   sops.defaultSopsFile = "${secrets}/marenz-frickelkiste/secrets.yaml";
 
+  # netrc file for fetching private packages
+  sops.secrets."marenz-frickelkiste/netrc" = {
+    format = "binary";
+    sopsFile = "${secrets}/marenz-frickelkiste/netrc";
+  };
+
+  nix.extraOptions = ''
+    netrc-file = ${config.sops.secrets."marenz-frickelkiste/netrc".path}
+  '';
+  nix.settings.extra-sandbox-paths =
+    [ "${config.sops.secrets."marenz-frickelkiste/netrc".path}" ];
+
   environment.systemPackages = with pkgs;
     let
       st = (pkgs.st.override { conf = builtins.readFile ./st.h; });
@@ -29,8 +41,14 @@
         configurePhase =
           "	make PREFIX=$out USE_WIDE=1 RELEASE=1 build/Makefile\n";
       }));
+      vampir = (pkgs.vampir.overrideAttrs (oldAttrs: {
+        unpackPhase = oldAttrs.unpackPhase + ''
+          ln -s "${config.users.users.marenz.home}/.local/share/vampir" $out/etc/vampir
+        '';
+      }));
     in [
-      #    customPkgs.vampir
+      vampir
+
       libimobiledevice
       ifuse
 

@@ -19,11 +19,17 @@
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-      packages.marenz-frickelkiste-nixos-rebuild =
-        pkgs.writeScriptBin "marenz-frickelkiste-nixos-rebuild" ''
-          nixos-rebuild --flake ${self}?submodules=1#marenz-frickelkiste -L $@
-        '';
+      overlays = import ./overlays { };
+
+      packages = (overlays { } pkgs) // {
+        marenz-frickelkiste-nixos-rebuild =
+          pkgs.writeScriptBin "marenz-frickelkiste-nixos-rebuild" ''
+            nixos-rebuild --flake ${self}?submodules=1#marenz-frickelkiste -L $@
+          '';
+      };
+
     in {
+
       package.x86_64-linux.default =
         self.nixosConfiguration.marenz-frickelkiste.config.system.build.vm;
       packages.x86_64-linux = packages;
@@ -44,6 +50,7 @@
           ./modules/xray-sensor.nix
           sops-nix.nixosModules.sops
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
+          { nixpkgs.overlays = [ overlays ]; }
         ];
       };
     };
