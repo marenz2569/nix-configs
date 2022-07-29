@@ -26,7 +26,11 @@
       overlays = import ./overlays { inherit nixpkgs-unstable; };
 
       packages = system:
-        let pkgs = nixpkgs.legacyPackages.${system};
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
         in (overlays { } pkgs) // {
           marenz-frickelkiste-nixos-rebuild =
             pkgs.writeScriptBin "marenz-frickelkiste-nixos-rebuild" ''

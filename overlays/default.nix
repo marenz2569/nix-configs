@@ -1,5 +1,7 @@
 { nixpkgs-unstable, ... }:
-_final: prev: {
+_final: prev:
+let pkgs-unstable = import nixpkgs-unstable { system = prev.system; };
+in {
   gxs700 = prev.python3Packages.callPackage ./gxs700 { };
   ncpamixer = prev.ncpamixer.overrideAttrs (_oldAttrs: {
     version = "unstable-2021-10-21";
@@ -15,5 +17,5 @@ _final: prev: {
   });
   st = prev.st.override { conf = builtins.readFile ./st/st.h; };
   vampir = prev.callPackage ./vampir { };
-  nixFlakes = nixpkgs-unstable.legacyPackages.${prev.system}.nixFlakes;
+  nixFlakes = pkgs-unstable.nixFlakes;
 }
