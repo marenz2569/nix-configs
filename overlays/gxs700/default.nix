@@ -12,4 +12,9 @@ buildPythonApplication rec {
   };
 
   propagatedBuildInputs = with python.pkgs; [ libusb1 numpy pillow scipy ];
+
+  postInstall = ''
+    mkdir -p $out/etc/udev/rules.d
+    cp ${./99-gxs700.rules} $out/etc/udev/rules.d/99-gxs700.rules
+  '';
 }
