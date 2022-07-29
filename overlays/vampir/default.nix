@@ -38,6 +38,6 @@ in stdenv.mkDerivation rec {
     homepage = "https://vampir.eu";
     license = licenses.unfree;
     maintainers = with maintainers; [ marenz ];
-    platforms = platforms.linux;
+    platforms = [ "x86_64-linux" ];
   };
 }

@@ -19,25 +19,33 @@
   outputs =
     { self, nixpkgs, nixpkgs-unstable, sops-nix, nixos-hardware, ... }@attrs:
     let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      inherit (nixpkgs) lib;
 
-      overlays = import ./overlays {
-        inherit nixpkgs-unstable;
-        system = "x86_64-linux";
-      };
+      systems = [ "x86_64-linux" "aarch64-linux" ];
 
-      packages = (overlays { } pkgs) // {
-        marenz-frickelkiste-nixos-rebuild =
-          pkgs.writeScriptBin "marenz-frickelkiste-nixos-rebuild" ''
-            nixos-rebuild --flake ${self}?submodules=1#marenz-frickelkiste -L $@
-          '';
-      };
+      overlays = import ./overlays { inherit nixpkgs-unstable; };
+
+      packages = system:
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in (overlays { } pkgs) // {
+          marenz-frickelkiste-nixos-rebuild =
+            pkgs.writeScriptBin "marenz-frickelkiste-nixos-rebuild" ''
+              nixos-rebuild --flake ${self}?submodules=1#marenz-frickelkiste -L $@
+            '';
+        };
     in {
-      packages.x86_64-linux = packages // (nixpkgs.lib.mapAttrs' (name: value:
-        nixpkgs.lib.nameValuePair (name + "-vm") (value.config.system.build.vm))
-        self.nixosConfigurations);
+      packages = let
+        nixosConfigurationsForSystem = system:
+          lib.filterAttrs (name: value: value.config.nixpkgs.system == system)
+          self.nixosConfigurations;
+        packagesForSystem = system:
+          (packages system) // (lib.mapAttrs' (name: value:
+            lib.nameValuePair (name + "-vm") (value.config.system.build.vm))
+            (nixosConfigurationsForSystem system));
+      in builtins.listToAttrs (builtins.map
+        (system: lib.nameValuePair system (packagesForSystem system)) systems);
 
-      nixosConfigurations.marenz-frickelkiste = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.marenz-frickelkiste = lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = attrs;
         modules = [

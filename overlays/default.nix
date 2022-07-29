@@ -1,4 +1,4 @@
-{ system ? builtins.currentSystem, nixpkgs-unstable, ... }:
+{ nixpkgs-unstable, ... }:
 _final: prev: {
   gxs700 = prev.python3Packages.callPackage ./gxs700 { };
   ncpamixer = prev.ncpamixer.overrideAttrs (_oldAttrs: {
@@ -15,5 +15,5 @@ _final: prev: {
   });
   st = prev.st.override { conf = builtins.readFile ./st/st.h; };
   vampir = prev.callPackage ./vampir { };
-  nixFlakes = nixpkgs-unstable.legacyPackages.${system}.nixFlakes;
+  nixFlakes = nixpkgs-unstable.legacyPackages.${prev.system}.nixFlakes;
 }
