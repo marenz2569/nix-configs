@@ -7,7 +7,7 @@
   system.stateVersion = "19.03";
 
   boot.tmpOnTmpfs = true;
-  boot.kernelPackages = pkgs.linuxPackages_5_18;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.extraModulePackages = with config.boot.kernelPackages; [ ];
 
   sops.defaultSopsFile = "${secrets}/marenz-frickelkiste/secrets.yaml";

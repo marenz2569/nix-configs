@@ -25,6 +25,11 @@
 
       overlays = import ./overlays { inherit nixpkgs-unstable; };
 
+      kernelUnstableOverlay = self: super: {
+        linuxKernel =
+          nixpkgs-unstable.legacyPackages.${super.system}.linuxKernel;
+      };
+
       packages = system:
         let
           pkgs = import nixpkgs {
@@ -66,7 +71,7 @@
           ./modules/xray-sensor.nix
           sops-nix.nixosModules.sops
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
-          { nixpkgs.overlays = [ overlays ]; }
+          { nixpkgs.overlays = [ overlays kernelUnstableOverlay ]; }
         ];
       };
     };
