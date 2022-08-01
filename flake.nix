@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -16,8 +17,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
-  outputs =
-    { self, nixpkgs, nixpkgs-unstable, sops-nix, nixos-hardware, ... }@attrs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-master, sops-nix
+    , nixos-hardware, ... }@attrs:
     let
       inherit (nixpkgs) lib;
 
@@ -25,9 +26,8 @@
 
       overlays = import ./overlays { inherit nixpkgs-unstable; };
 
-      kernelUnstableOverlay = self: super: {
-        linuxKernel =
-          nixpkgs-unstable.legacyPackages.${super.system}.linuxKernel;
+      kernelMasterOverlay = self: super: {
+        linuxKernel = nixpkgs-master.legacyPackages.${super.system}.linuxKernel;
       };
 
       packages = system:
@@ -71,7 +71,7 @@
           ./modules/xray-sensor.nix
           sops-nix.nixosModules.sops
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
-          { nixpkgs.overlays = [ overlays kernelUnstableOverlay ]; }
+          { nixpkgs.overlays = [ overlays kernelMasterOverlay ]; }
         ];
       };
     };
