@@ -174,5 +174,6 @@
   services.unifi = {
     enable = true;
     unifiPackage = pkgs.unifiStable;
+    openFirewall = true;
   };
 }
