@@ -15,10 +15,15 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+    nix-matlab = {
+      url = "gitlab:doronbehar/nix-matlab";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-master, sops-nix
-    , nixos-hardware, ... }@attrs:
+    , nixos-hardware, nix-matlab, ... }@attrs:
     let
       inherit (nixpkgs) lib;
 
@@ -71,7 +76,10 @@
           ./modules/xray-sensor.nix
           sops-nix.nixosModules.sops
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
-          { nixpkgs.overlays = [ overlays kernelMasterOverlay ]; }
+          {
+            nixpkgs.overlays =
+              [ overlays nix-matlab.overlay kernelMasterOverlay ];
+          }
         ];
       };
     };

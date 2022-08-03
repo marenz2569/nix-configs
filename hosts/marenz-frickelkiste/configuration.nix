@@ -34,6 +34,12 @@
     in [
       vampir
 
+      # https://gitlab.com/doronbehar/nix-matlab
+      matlab
+      matlab-shell
+      matlab-mlint
+      matlab-mex
+
       libimobiledevice
       ifuse
 
