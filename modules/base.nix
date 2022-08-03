@@ -45,6 +45,9 @@
 
   time.timeZone = "Europe/Berlin";
 
+  # firmware update
+  services.fwupd.enable = true;
+
   # GPG SSH Authentication and Smartcard support
   services.pcscd.enable = true;
   programs.gnupg.agent = {
