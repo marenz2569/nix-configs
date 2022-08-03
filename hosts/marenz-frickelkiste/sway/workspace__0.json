@@ -1,0 +1,6 @@
+{
+	"layout": "splith",
+	"nodes": [
+		{ "swallows": { "cmd": "exec texmaker" } }
+	]
+}

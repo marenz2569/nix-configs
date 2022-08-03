@@ -2,7 +2,7 @@
 
 {
   imports =
-    [ ./i3/common.nix ./hardware-configuration.nix ./wireguard-dump-dvb.nix ];
+    [ ./sway ./hardware-configuration.nix ./wireguard-dump-dvb.nix ];
 
   system.stateVersion = "19.03";
 

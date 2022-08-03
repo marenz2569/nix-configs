@@ -1,0 +1,7 @@
+{
+	"layout": "stacking",
+	"nodes": [
+		{ "swallows": { "instance": "vivaldi-stable" } },
+		{ "swallows": { "instance": "vivaldi-stable" } }
+	]
+}

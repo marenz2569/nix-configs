@@ -1,3 +1,10 @@
+input * {
+	xkb_layout "de"
+	xkb_variant "dvorak"
+}
+
+output "*" background "/etc/sway/background" fill
+
 set $mod Mod1
 set $mod2 Mod4
 
@@ -10,7 +17,7 @@ bindsym $mod+Return exec st
 bindsym $mod+Shift+q kill
 
 bindsym $mod+d exec dmenu_run -i
-bindsym $mod+Shift+d exec i3-dmenu-desktop
+bindsym $mod+Shift+d exec j4-dmenu-desktop
 
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
@@ -39,7 +46,7 @@ bindsym $mod+a focus parent
 bindsym $mod2+r reload
 bindsym $mod2+c restart
 
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3 exit'"
+bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your wayland session.' -b 'Yes, exit sway' 'sway exit'"
 
 mode "resize" {
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -55,20 +62,14 @@ bindsym $mod+r mode "resize"
 bindsym $mod+p exec "xrandr --output eDP-1 --auto --pos 0x0 --output DP-2-1 --auto --rotate right --pos -1024x-200"
 bindsym $mod+Shift+p exec "xrandr --output eDP-1 --auto --output DP-2-1 --off"
 
-bindsym $mod+l exec "i3lock -i /etc/i3/lockscreen"
+bindsym $mod+l exec "swaylock -i /etc/sway/lockscreen"
 
-bindsym $mod+b exec "/etc/i3/bri-dmenu.sh"
-
-bindsym $mod+g exec "/etc/i3/ch-gamma.sh"
+bindsym $mod+b exec "/etc/sway/bri-dmenu.sh"
 
 bar {
-	id bar-0
-	tray_output primary
-	status_command i3status -c /etc/i3/i3-status.conf
+	status_command i3status -c /etc/sway/i3-status.conf
 	position top
 }
-
-exec feh --bg-scale '/etc/i3/background'
 
 bindsym $mod+o move workspace to output right
 
@@ -133,32 +134,32 @@ set $F10 "F10"
 bindsym $mod+F10 workspace $F10
 bindsym $mod+Shift+F10 move container to workspace $F10
 
+
 default_border none
 default_floating_border none
 
-assign [class="sled"] $F4
-for_window [class="sled"] floating disable
-for_window [class="sled"] fullscreen enable
+# assign [class="sled"] $F4
+# for_window [class="sled"] floating disable
+# for_window [class="sled"] fullscreen enable
 
-exec i3-msg 'workspace $1; append_layout /etc/i3/workspace__1.json'
-exec "vivaldi"
+assign [class="vivaldi"] $1
+exec sway-layout --bg --ws '$1' /etc/sway/workspace__1.json
+exec vivaldi
 
-exec i3-msg 'workspace $2; append_layout /etc/i3/workspace__2.json'
-exec "thunderbird"
+exec sway-layout --bg --ws '$2' /etc/sway/workspace__2.json
 
-exec i3-msg 'workspace $3; append_layout /etc/i3/workspace__3.json'
-exec "st tmuxp load /etc/tmuxp/set.yaml -y"
+exec sway-layout --bg --ws '$3' /etc/sway/workspace__3.json
 
-exec i3-msg 'workspace $5; append_layout /etc/i3/workspace__5.json'
-exec "gajim"
-exec "telegram-desktop"
-exec "signal-desktop"
+for_window [title="Password Required"] floating enable
+exec sway-layout --bg --ws '$5' /etc/sway/workspace__5.json
 
-exec i3-msg 'workspace $1'
+exec sway-layout --bg --ws '$0' /etc/sway/nix-configs/workspace__0.json
 
-assign [class="Firefox"] $1
-
+for_window [title="wpa_gui"] floating enable
 exec wpa_gui
 
-exec "texmaker"
-assign [class="Texmaker"] $0
+# screenshots
+bindsym $mod+c exec grim  -g "$(slurp)" $HOME/$(date +'%H:%M:%S_scrot.png')
+
+exec dbus-sway-environment
+exec configure-gtk

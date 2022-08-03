@@ -1,0 +1,20 @@
+{
+	"layout": "splith",
+	"nodes": [
+		{
+			"layout": "splith",
+			"width": 70,
+			"nodes": [
+				{ "swallows": { "cmd": "exec gajim" } }
+			]
+		},
+		{
+			"layout": "tabbed",
+			"width": 30,
+			"nodes": [
+				{ "swallows": { "cmd": "exec telegram-desktop" } },
+				{ "swallows": { "cmd": "exec signal-desktop" } }				
+			]
+		}
+	]
+}

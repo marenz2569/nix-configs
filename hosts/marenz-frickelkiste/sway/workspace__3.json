@@ -1,0 +1,6 @@
+{
+	"layout": "splith",
+	"nodes": [
+		{ "swallows": { "cmd": "exec st tmuxp load /etc/tmuxp/set.yaml -y" } }
+	]
+}
