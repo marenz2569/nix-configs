@@ -114,7 +114,7 @@ in {
     spotify
     tigervnc
     wireshark-qt
-    zoom
+    zoom-us
     zotero
   ];
 }
