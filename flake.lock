@@ -115,11 +115,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-CAs91wY1OranSBErpangpANOr1XqgZyqqLV5K0QDK4U=",
-        "path": "/nix/store/3a5p8w3mlx1jywbzdfm6xmlh6s8w2a4f-source/secrets",
+        "path": "/nix/store/mlm7az5bp8i558agapd0ks0r54vci28b-source/secrets",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/3a5p8w3mlx1jywbzdfm6xmlh6s8w2a4f-source/secrets",
+        "path": "/nix/store/mlm7az5bp8i558agapd0ks0r54vci28b-source/secrets",
         "type": "path"
       }
     },
