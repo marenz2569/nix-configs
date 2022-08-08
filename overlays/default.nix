@@ -3,7 +3,6 @@ _final: prev:
 let pkgs-unstable = import nixpkgs-unstable { system = prev.system; };
 in {
   gxs700 = prev.python3Packages.callPackage ./gxs700 { };
-  sway-layout = prev.python3Packages.callPackage ./sway-layout { };
   ncpamixer = prev.ncpamixer.overrideAttrs (_oldAttrs: {
     version = "unstable-2021-10-21";
 

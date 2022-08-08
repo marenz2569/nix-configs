@@ -1,0 +1,81 @@
+{
+    "border": "none",
+    "floating": "auto_off",
+    "layout": "splith",
+    "marks": [],
+    "percent": 0.7,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "none",
+            "current_border_width": 0,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 500,
+               "width": 1000,
+               "x": 768,
+               "y": 23
+            },
+            "marks": [],
+            "name": "Gajim",
+            "percent": 1,
+            "swallows": [
+               {
+               "class": "^Gajim$",
+               "instance": "^org\\.gajim\\.Gajim$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+
+{
+    "border": "none",
+    "floating": "auto_off",
+    "layout": "tabbed",
+    "marks": [],
+    "percent": 0.3,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "none",
+            "current_border_width": 0,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1036,
+               "width": 1916,
+               "x": 2,
+               "y": 42
+            },
+            "marks": [],
+            "percent": 0.375,
+            "swallows": [
+               {
+                "class": "^TelegramDesktop$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "none",
+            "current_border_width": 0,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1036,
+               "width": 800,
+               "x": 1346,
+               "y": 42
+            },
+            "marks": [],
+            "percent": 0.625,
+            "swallows": [
+               {
+               "class": "^Signal$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+

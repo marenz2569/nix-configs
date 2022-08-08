@@ -1,0 +1,21 @@
+{
+    "border": "none",
+    "current_border_width": 0,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 360,
+       "width": 640,
+       "x": 0,
+       "y": 0
+    },
+    "marks": [],
+    "percent": 1,
+    "swallows": [
+       {
+       "class": "^st\\-256color$",
+       "instance": "^st\\-256color$"
+       }
+    ],
+    "type": "con"
+}
+
