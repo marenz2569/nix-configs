@@ -19,4 +19,5 @@ in {
   vampir = prev.callPackage ./vampir { };
   nixFlakes = pkgs-unstable.nixFlakes;
   probe-rs-udev = prev.callPackage ./probe-rs-udev { };
+  ida-free = prev.callPackage ./ida-free { };
 }
