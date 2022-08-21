@@ -110,6 +110,7 @@
       traceroute
       whois
       nixfmt
+      jq
     ];
 
   environment.etc."xdg/mimeapps.list".text = ''
