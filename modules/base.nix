@@ -124,4 +124,10 @@
     sops
     git
   ];
+
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    fallbackDns = [ "1.1.1.1" ];
+  };
 }
