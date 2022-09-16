@@ -61,5 +61,9 @@
     wireshark-qt
     zoom-us
     zotero
+    prusa-slicer
+    solvespace
+    ghidra
+    freecad
   ];
 }
