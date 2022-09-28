@@ -1,6 +1,6 @@
 { config, pkgs, ... }: {
   # NIX configuration
-  nix.package = pkgs.nixFlakes;
+  nix.package = pkgs.nixLatest;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -71,7 +71,15 @@
       theme = "agnoster";
       plugins = [ "git" "virtualenv" "sudo" ];
     };
+    # https://vim.fandom.com/wiki/256_colors_setup_for_console_Vim
+    shellInit = ''
+      export TERM=screen-256color
+    '';
   };
+
+  # disable ConnectionNotifier of blueman
+  # https://github.com/blueman-project/blueman/issues/1556#issuecomment-882857426
+  programs.dconf.enable = true;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.useXkbConfig = true;
@@ -88,38 +96,51 @@
 
   # VIM configuration
   programs.vim.defaultEditor = true;
+  environment.variables = { EDITOR = "vim"; };
 
   environment.systemPackages = with pkgs; [
-    (vim_configurable.customize {
+    ((vim_configurable.override { }).customize {
       name = "vim";
-      vimrcConfig.customRC = ''
-        syntax on
-        colorscheme default
-        set number
+      vimrcConfig = {
+        packages.myplugins = with pkgs.vimPlugins; {
+          start = [
+            vim-closetag
+            vim-airline
+            vim-airline-themes
+            tagbar
+            YouCompleteMe
+            vim-hoogle
+            haskell-vim
+            elm-vim
+          ];
+          opt = [ ];
+        };
+        customRC = ''
+          syntax on
+          colorscheme default
+          set number
 
-        set autoindent
-        set shiftwidth=2
-        set tabstop=2
+          set autoindent
+          set shiftwidth=2
+          set tabstop=2
 
-        augroup vimrc_todo
-          au!
-          au Syntax * syn match MyTodo /\v<(FIXME|NOTE|TODO|OPTIMIZE|XXX|maybe I should|SEE):/
-            \ containedin=.*Comment,vimCommentTitle
-        augroup END
-        hi def link MyTodo Todo
-      '';
-      vimrcConfig.vam.knownPlugins = pkgs.vimPlugins;
-      vimrcConfig.vam.pluginDictionaries = [{
-        names = [
-          "vim-closetag"
-          "vim-airline"
-          "tagbar"
-          "YouCompleteMe"
-          "hoogle"
-          "haskell-vim"
-          "elm-vim"
-        ];
-      }];
+          au Filetype html,xml,xsd source ~/.vim/scripts/closetag.vim
+
+          augroup vimrc_todo
+            au!
+            au Syntax * syn match MyTodo /\v<(FIXME|NOTE|TODO|OPTIMIZE|XXX|maybe I should|SEE):/
+              \ containedin=.*Comment,vimCommentTitle
+          augroup END
+          hi def link MyTodo Todo
+
+          filetype plugin indent on
+          au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab autoindent
+
+          let g:airline_powerline_fonts = 1
+          let g:airline_theme='powerlineish'
+          let g:airline#extensions#tabline#enabled = 1
+        '';
+      };
     })
     sops
     git

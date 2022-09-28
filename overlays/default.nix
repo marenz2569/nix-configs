@@ -17,7 +17,7 @@ in {
   });
   st = prev.st.override { conf = builtins.readFile ./st/st.h; };
   vampir = prev.callPackage ./vampir { };
-  nixFlakes = pkgs-unstable.nixFlakes;
+  nixLatest = pkgs-unstable.nix;
   probe-rs-udev = prev.callPackage ./probe-rs-udev { };
   ida-free = prev.callPackage ./ida-free { };
 }
