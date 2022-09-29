@@ -19,6 +19,7 @@
     "aesni_intel"
     "cryptd"
     "essiv"
+    "r8169"
   ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
