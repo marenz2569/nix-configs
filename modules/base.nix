@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, self, ... }: {
   # NIX configuration
   nix.package = pkgs.nixLatest;
   nix.extraOptions = ''
@@ -12,6 +12,11 @@
     "dump-dvb.cachix.org-1:+Dq7gqpQG4YlLA2X3xJsG1v3BrlUGGpVtUKWk0dTyUU="
     "nix-serve.hq.c3d2.de:KZRGGnwOYzys6pxgM8jlur36RmkJQ/y8y62e52fj1ps="
   ];
+
+  # override default nix shell nixpkgs# behaviour to use current flake lock
+  nix.registry =
+    let flakes = lib.filterAttrs (name: value: value ? outputs) self.inputs;
+    in builtins.mapAttrs (name: v: { flake = v; }) flakes;
 
   nixpkgs.config.allowUnfree = true;
 
