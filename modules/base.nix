@@ -18,6 +18,8 @@
     let flakes = lib.filterAttrs (name: value: value ? outputs) self.inputs;
     in builtins.mapAttrs (name: v: { flake = v; }) flakes;
 
+  nix.nixPath = lib.mapAttrsToList (name: value: "${name}=${value.outPath}") self.inputs;
+
   nixpkgs.config.allowUnfree = true;
 
   programs.ccache.enable = true;
