@@ -119,12 +119,15 @@
             vim-hoogle
             haskell-vim
             elm-vim
+            coc-flutter
+            vim-flutter
+            dart-vim-plugin
           ];
           opt = [ ];
         };
         customRC = ''
           syntax on
-          colorscheme default
+          colorscheme desert
           set number
 
           set autoindent
@@ -146,6 +149,9 @@
           let g:airline_powerline_fonts = 1
           let g:airline_theme='powerlineish'
           let g:airline#extensions#tabline#enabled = 1
+
+          let g:flutter_show_log_on_run = "tab"
+          let g:flutter_use_last_run_option = 1
         '';
       };
     })

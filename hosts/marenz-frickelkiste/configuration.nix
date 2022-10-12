@@ -73,7 +73,12 @@
       cmake
       gnumake
 
-      #androidStudioPackages.stable
+      jetbrains.idea-community
+      flutter
+      flutter.dart
+
+      android-studio
+      android-tools
       android-file-transfer
       kotlin
 

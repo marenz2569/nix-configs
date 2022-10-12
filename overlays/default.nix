@@ -1,6 +1,8 @@
 { nixpkgs-unstable, ... }:
 _final: prev:
-let pkgs-unstable = import nixpkgs-unstable { system = prev.system; };
+let
+  pkgs-unstable = import nixpkgs-unstable { system = prev.system; };
+  flutterPackages = prev.lib.recurseIntoAttrs (prev.callPackage "${nixpkgs-unstable}/pkgs/development/compilers/flutter" { });
 in {
   gxs700 = prev.python3Packages.callPackage ./gxs700 { };
   ncpamixer = prev.ncpamixer.overrideAttrs (_oldAttrs: {
@@ -20,4 +22,10 @@ in {
   nixLatest = pkgs-unstable.nix;
   probe-rs-udev = prev.callPackage ./probe-rs-udev { };
   ida-free = prev.callPackage ./ida-free { };
+  flutter = flutterPackages.stable.overrideAttrs(oldAttrs: {
+    startScript = ''
+      #!${prev.bash}/bin/bash
+      export CHROME_EXECUTABLE=${prev.google-chrome}/bin/google-chrome-stable
+    '' + oldAttrs.startScript;
+  });
 }
