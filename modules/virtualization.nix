@@ -7,4 +7,6 @@
   virtualisation.docker.enable = true;
 
   environment.systemPackages = with pkgs; [ virtmanager ];
+
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 }
