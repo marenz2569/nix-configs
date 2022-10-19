@@ -5,10 +5,12 @@
   };
 
   networking.supplicant."wlp3s0" = {
-    driver = "wext";
+    driver = "nl80211,wext";
     extraConf = ''
       pmf=1
-      bgscan="simple:30:-70:3600"
+      fast_reauth=1
+      ap_scan=1
+      autoscan=periodic:1
     '';
     userControlled.enable = true;
     extraCmdArgs = "-c${config.sops.secrets."wpa_supplicant.conf".path}";
