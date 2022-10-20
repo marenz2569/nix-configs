@@ -26,13 +26,13 @@
 
   # SSH configuration
   users.users.root.openssh.authorizedKeys.keyFiles =
-    [ ../keys/ssh/marenz1 ../keys/ssh/marenz1 ];
+    [ ../keys/ssh/marenz1 ../keys/ssh/marenz2 ];
 
   services.openssh = {
     enable = true;
     passwordAuthentication = false;
     forwardX11 = true;
-    ports = [ 1122 ];
+    ports = [ 22 ];
   };
 
   # SOPS configuration

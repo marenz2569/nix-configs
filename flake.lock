@@ -138,14 +138,17 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1,
+        "lastModified": 1665845027,
         "narHash": "sha256-l3AYqmlFm4Svy6x8YMemwNF7AwryP0Orj/XDu0Xf2dc=",
-        "path": "/nix/store/bnrx4cy3gdhk7fka4xb7w4z9ridk5nc9-source/secrets",
-        "type": "path"
+        "ref": "refs/heads/master",
+        "rev": "a00c22e9941af661106373bcc6d78a795269e055",
+        "revCount": 84,
+        "type": "git",
+        "url": "ssh://git@github.com/marenz2569/nix-configs-secrets.git"
       },
       "original": {
-        "path": "/nix/store/bnrx4cy3gdhk7fka4xb7w4z9ridk5nc9-source/secrets",
-        "type": "path"
+        "type": "git",
+        "url": "ssh://git@github.com/marenz2569/nix-configs-secrets.git"
       }
     },
     "sops-nix": {

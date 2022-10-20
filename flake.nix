@@ -11,7 +11,7 @@
     };
 
     secrets = {
-      url = "./secrets";
+      url = "git+ssh://git@github.com/marenz2569/nix-configs-secrets.git";
       flake = false;
     };
 
@@ -48,7 +48,13 @@
         in (overlays { } pkgs) // {
           marenz-frickelkiste-nixos-rebuild =
             pkgs.writeScriptBin "marenz-frickelkiste-nixos-rebuild" ''
-              nixos-rebuild --flake ${self}?submodules=1#marenz-frickelkiste -L $@
+              #!${pkgs.runtimeShell} -ex
+              ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#marenz-frickelkiste -L $@
+            '';
+          wg-bar-ma-nixos-rebuild =
+            pkgs.writeScriptBin "wg-bar-ma-nixos-rebuild" ''
+              #!${pkgs.runtimeShell} -ex
+              ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#wg-bar-ma -L --target-host wg-bar-ma --use-remote-sudo "$@"
             '';
         };
     in {
@@ -82,6 +88,17 @@
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
           ./modules/t14gen1amd.nix
           { nixpkgs.overlays = [ overlays nix-matlab.overlay ]; }
+        ];
+      };
+
+      nixosConfigurations.wg-bar-ma = lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = attrs;
+        modules = [
+          ./hosts/wg-bar-ma
+          ./modules/base.nix
+          sops-nix.nixosModules.sops
+          { nixpkgs.overlays = [ overlays ]; }
         ];
       };
     };
