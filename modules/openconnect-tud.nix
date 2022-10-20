@@ -10,7 +10,7 @@
     gateway = "vpn2.zih.tu-dresden.de";
     passwordFile = config.sops.secrets."openconnect-tud.pass".path;
     extraOptions = {
-      authgroup = "B-Tunnel-Public-TU-Networks";
+      authgroup = "A-Tunnel-TU-Networks";
       compression = "stateless";
       no-dtls = true;
       no-http-keepalive = true;

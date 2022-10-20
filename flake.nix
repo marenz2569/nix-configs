@@ -54,7 +54,7 @@
           wg-bar-ma-nixos-rebuild =
             pkgs.writeScriptBin "wg-bar-ma-nixos-rebuild" ''
               #!${pkgs.runtimeShell} -ex
-              ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#wg-bar-ma -L --target-host wg-bar-ma --use-remote-sudo "$@"
+              ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#wg-bar-ma --target-host wg-bar-ma --use-substitutes "$@"
             '';
         };
     in {
