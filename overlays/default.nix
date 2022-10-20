@@ -1,4 +1,4 @@
-{ nixpkgs-unstable, ... }:
+{ nixpkgs-unstable, sdr-nix, ... }:
 _final: prev:
 let
   pkgs-unstable = import nixpkgs-unstable { system = prev.system; };
@@ -27,5 +27,8 @@ in {
       #!${prev.bash}/bin/bash
       export CHROME_EXECUTABLE=${prev.google-chrome}/bin/google-chrome-stable
     '' + oldAttrs.startScript;
+  });
+  SigDigger = sdr-nix.packages.${prev.system}.sigdigger.overrideAttrs(_oldAttrs: {
+    pname = "SigDigger";
   });
 }
