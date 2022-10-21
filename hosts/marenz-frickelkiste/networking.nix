@@ -2,6 +2,9 @@
   sops.secrets.wg-dump-dvb-seckey.owner =
     config.users.users.systemd-network.name;
 
+  sops.secrets.wg-bar-ma-seckey.owner =
+    config.users.users.systemd-network.name;
+
   sops.secrets."openconnect-tud.pass" = {
     format = "binary";
     sopsFile = "${secrets}/openconnect-tud.pass";
@@ -192,6 +195,44 @@
           routeConfig = {
             Destination = "192.168.0.0/16";
             Metric = 300;
+          };
+        }
+      ];
+    };
+
+    netdevs."21-wg-bar-ma" = {
+      netdevConfig = {
+        Kind = "wireguard";
+        Name = "wg-bar-ma";
+      };
+      wireguardConfig = {
+        PrivateKeyFile = config.sops.secrets.wg-bar-ma-seckey.path;
+      };
+      wireguardPeers = [{
+        wireguardPeerConfig = {
+          PublicKey = "iriQ7Bi5ANixvCOV6EwLcxKCnwBt6hexn+5D4lTGhyY=";
+          Endpoint = "172.26.63.120:51820";
+          AllowedIPs = [ "10.65.89.0/24" "141.30.174.0/24" ];
+          PersistentKeepalive = 25;
+        };
+      }];
+    };
+    networks."21-wg-bar-ma" = {
+      matchConfig.Name = "wg-bar-ma";
+      networkConfig = { Address = "10.65.89.3/24"; };
+      routes = [
+        {
+          routeConfig = {
+            Gateway = "10.65.89.1";
+            Destination = "10.65.89.0/24";
+            Metric = 290;
+          };
+        }
+        {
+          routeConfig = {
+            Gateway = "10.65.89.2";
+            Destination = "141.30.174.0/24";
+            Metric = 290;
           };
         }
       ];

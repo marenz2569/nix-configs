@@ -2,6 +2,7 @@ keys:
   - &admin_marenz1 069836A578F7939612DB4934F77D0F7E247A1EE4
   - &admin_marenz2 ED06986DFAAE6A61B751DC2F537F97DFB394C433
   - &marenz-frickelkiste age1vk2v0wk4g4uym54f7ldjrugwe86qhlu28dektp7cjlldadqrrg7sdze6x9
+  - &wg-bar-ma age1xwszjcwnkyshugls5etvqj8kn4jxw3q53cynfg9ufrma6m7vnywsvpp2lk
 
 creation_rules:
   - path_regex: secrets/[^/]+\.*$
@@ -18,3 +19,10 @@ creation_rules:
         - *admin_marenz2
         age:
         - *marenz-frickelkiste
+  - path_regex: secrets/wg-bar-ma/[^/]+\.*$
+    key_groups:
+      - pgp:
+        - *admin_marenz1
+        - *admin_marenz2
+        age:
+        - *wg-bar-ma

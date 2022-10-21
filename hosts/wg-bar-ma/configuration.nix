@@ -1,5 +1,7 @@
-{ pkgs, ... }: {
+{ secrets, pkgs, ... }: {
   system.stateVersion = "22.05";
+
+  sops.defaultSopsFile = "${secrets}/wg-bar-ma/secrets.yaml";
 
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.configurationLimit = 2;
