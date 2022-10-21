@@ -77,7 +77,6 @@
           ./modules/base.nix
           ./modules/graphical.nix
           ./modules/microcontroller.nix
-          ./modules/openconnect-tud.nix
           ./modules/openvpn-bad5.nix
           ./modules/pipewire.nix
           ./modules/sdr.nix
