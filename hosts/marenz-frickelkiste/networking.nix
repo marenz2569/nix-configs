@@ -2,7 +2,9 @@
   sops.secrets.wg-dump-dvb-seckey.owner =
     config.users.users.systemd-network.name;
 
-  sops.secrets.wg-bar-ma-seckey.owner =
+  sops.secrets.wg-bar-ma-seckey.owner = config.users.users.systemd-network.name;
+
+  sops.secrets.wg-zentralwerk-seckey.owner =
     config.users.users.systemd-network.name;
 
   sops.secrets."openconnect-tud.pass" = {
@@ -168,6 +170,10 @@
     };
     networks."20-openvpn-tud" = {
       matchConfig.Name = "openvpn-tud-tun";
+      networkConfig = {
+        DNS = [ "141.30.1.1" "141.76.14.1" ];
+        Domains = [ "~tu-dresden.de" ];
+      };
       # 141.30.0.0/16
       # 141.76.0.0/16
       # 172.16.0.0/12
@@ -200,6 +206,79 @@
       ];
     };
 
+    netdevs."20-wg-zentralwerk" = {
+      netdevConfig = {
+        Kind = "wireguard";
+        Name = "wg-zentralwerk";
+      };
+      wireguardConfig = {
+        PrivateKeyFile = config.sops.secrets.wg-zentralwerk-seckey.path;
+        RouteTable = "off";
+      };
+      wireguardPeers = [{
+        wireguardPeerConfig = {
+          PublicKey = "PG2VD0EB+Oi+U5/uVMUdO5MFzn59fAck6hz8GUyLMRo=";
+          Endpoint = "81.201.149.152:1337";
+          AllowedIPs = [
+            # c3d2.zentralwerk.org
+            "172.22.99.0/24"
+            # hq.c3d2.de
+            # serv.zentralwerk.org
+            "172.20.73.0/25"
+            # cluster.zentralwerk.org
+            "172.20.77.0/27"
+            # wg
+            "172.20.76.224/28"
+          ];
+          PersistentKeepalive = 25;
+        };
+      }];
+    };
+    networks."20-wg-zentralwerk" = {
+      matchConfig.Name = "wg-zentralwerk";
+      networkConfig = {
+        Address = "172.20.76.230/28";
+        IPv6AcceptRA = true;
+        DNS = "172.20.73.8";
+        Domains = [
+          "~hq.c3d2.de"
+          "~serv.zentralwerk.org"
+          "~c3d2.zentralwerk.org"
+          "~cluster.zentralwerk.org"
+        ];
+      };
+      routes = [
+        {
+          routeConfig = {
+            Gateway = "172.20.76.225";
+            Destination = "172.22.99.0/24";
+            Metric = 290;
+          };
+        }
+        {
+          routeConfig = {
+            Gateway = "172.20.76.225";
+            Destination = "172.20.73.0/25";
+            Metric = 290;
+          };
+        }
+        {
+          routeConfig = {
+            Gateway = "172.20.76.225";
+            Destination = "172.20.77.0/27";
+            Metric = 290;
+          };
+        }
+        {
+          routeConfig = {
+            Gateway = "172.20.76.225";
+            Destination = "172.20.76.224/28";
+            Metric = 290;
+          };
+        }
+      ];
+    };
+
     netdevs."21-wg-bar-ma" = {
       netdevConfig = {
         Kind = "wireguard";
@@ -225,7 +304,7 @@
           routeConfig = {
             Gateway = "10.65.89.1";
             Destination = "10.65.89.0/24";
-            Metric = 290;
+            Metric = 300;
           };
         }
         {
