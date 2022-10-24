@@ -33,14 +33,24 @@
         PrivateKeyFile = config.sops.secrets.wg-bar-ma-seckey.path;
         ListenPort = 51820;
       };
-      wireguardPeers = [{
-        # marenz-frickelkiste
-        wireguardPeerConfig = {
-          PublicKey = "NAJeYqPJolZykRoNG2DPzSV9PMXq118OXU1xq1yTFQE=";
-          AllowedIPs = [ "10.65.89.3/32" ];
-          PersistentKeepalive = 25;
-        };
-      }];
+      wireguardPeers = [
+        {
+          # marenz-frickelkiste
+          wireguardPeerConfig = {
+            PublicKey = "NAJeYqPJolZykRoNG2DPzSV9PMXq118OXU1xq1yTFQE=";
+            AllowedIPs = [ "10.65.89.3/32" ];
+            PersistentKeepalive = 25;
+          };
+        }
+        {
+          # controller-physec
+          wireguardPeerConfig = {
+            PublicKey = "msGmz9wyLJ1IkDeIjyn8NmhMuW9c5lL/tn2csoKnSi0=";
+            AllowedIPs = [ "10.65.89.2/32" ];
+            PersistentKeepalive = 25;
+          };
+        }
+      ];
     };
     networks."20-wg-bar-ma" = {
       matchConfig.Name = "wg-bar-ma";
