@@ -32,7 +32,7 @@
     config = ''
       tls-client
       pull
-      remote openvpn.zih.tu-dresden.de
+      remote 141.30.56.199
       port 1194
       dev-type tun
       dev openvpn-tud-tun
@@ -173,6 +173,7 @@
       networkConfig = {
         DNS = [ "141.30.1.1" "141.76.14.1" ];
         Domains = [ "~tu-dresden.de" ];
+        KeepConfiguration = true;
       };
       # 141.30.0.0/16
       # 141.76.0.0/16

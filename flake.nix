@@ -56,6 +56,11 @@
               #!${pkgs.runtimeShell} -ex
               ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#wg-bar-ma --target-host wg-bar-ma --use-substitutes "$@"
             '';
+          controller-physec-nixos-rebuild =
+            pkgs.writeScriptBin "controller-physec-nixos-rebuild" ''
+              #!${pkgs.runtimeShell} -ex
+              ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#controller-physec --target-host controller-physec --use-substitutes "$@"
+            '';
         };
     in {
       packages = let
@@ -95,6 +100,17 @@
         specialArgs = attrs;
         modules = [
           ./hosts/wg-bar-ma
+          ./modules/base.nix
+          sops-nix.nixosModules.sops
+          { nixpkgs.overlays = [ overlays ]; }
+        ];
+      };
+
+      nixosConfigurations.controller-physec = lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = attrs;
+        modules = [
+          ./hosts/controller-physec
           ./modules/base.nix
           sops-nix.nixosModules.sops
           { nixpkgs.overlays = [ overlays ]; }
