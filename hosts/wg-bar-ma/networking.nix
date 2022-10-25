@@ -46,7 +46,7 @@
           # controller-physec
           wireguardPeerConfig = {
             PublicKey = "msGmz9wyLJ1IkDeIjyn8NmhMuW9c5lL/tn2csoKnSi0=";
-            AllowedIPs = [ "10.65.89.2/32" ];
+            AllowedIPs = [ "10.65.89.2/32" "10.65.90.0/24" ];
             PersistentKeepalive = 25;
           };
         }
@@ -58,6 +58,12 @@
         Address = "10.65.89.1/24";
         IPForward = "ipv4";
       };
+      routes = [{
+        routeConfig = {
+          Gateway = "10.65.89.2";
+          Destination = "10.65.90.0/24";
+        };
+      }];
     };
   };
 

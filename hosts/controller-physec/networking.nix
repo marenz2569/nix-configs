@@ -22,6 +22,16 @@
       dhcpV4Config.RouteMetric = 100;
     };
 
+    networks."10-ether2" = {
+      matchConfig.PermanentMACAddress = "a0:ce:c8:0a:46:51";
+      linkConfig.RequiredForOnline = "no";
+      networkConfig = {
+        IPForward = "ipv4";
+        IPMasquerade = "ipv4";
+        Address = "10.65.90.1/24";
+      };
+    };
+
     netdevs."20-wg-bar-ma" = {
       netdevConfig = {
         Kind = "wireguard";
@@ -41,7 +51,11 @@
     };
     networks."20-wg-bar-ma" = {
       matchConfig.Name = "wg-bar-ma";
-      networkConfig = { Address = "10.65.89.2/24"; };
+      networkConfig = {
+        Address = "10.65.89.2/24";
+        IPForward = "ipv4";
+        IPMasquerade = "ipv4";
+      };
       routes = [{
         routeConfig = {
           Gateway = "10.65.89.1";
@@ -50,5 +64,33 @@
         };
       }];
     };
+  };
+
+  services.dhcpd4 = {
+    enable = true;
+    interfaces = [ "enp0s20f0u3" ];
+    extraConfig = ''
+      option domain-name-servers 1.1.1.1;
+      option subnet-mask 255.255.255.0;
+
+      subnet 10.65.90.0 netmask 255.255.255.0 {
+        option broadcast-address 10.65.90.255;
+        option routers 10.65.90.1;
+        interface enp0s20f0u3;
+
+        host alice {
+          hardware ethernet 94:83:c4:1b:cf:2f;
+          fixed-address 10.65.90.10;
+        }
+        host eve {
+          hardware ethernet 94:83:c4:1b:d1:90;
+          fixed-address 10.65.90.11;
+        }
+        host bob {
+          hardware ethernet 94:83:c4:1b:d2:2f;
+          fixed-address 10.65.90.12;
+        }
+      }
+    '';
   };
 }

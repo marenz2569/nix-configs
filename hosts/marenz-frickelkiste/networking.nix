@@ -114,6 +114,30 @@
       }];
     };
 
+    # make dns in tud and zw work work...
+    networks."09-wlan" = {
+      matchConfig = {
+        Name = "wlp3s0";
+        SSID = [ "eduroam" "C3D2" "ZW public" ];
+      };
+      networkConfig = {
+        DHCP = "yes";
+        IPv6AcceptRA = true;
+        DNS = "1.1.1.1";
+      };
+      dhcpV4Config = {
+        RouteMetric = 200;
+        UseDNS = false;
+      };
+      routes = [{
+        routeConfig = {
+          Gateway = "_dhcp4";
+          Destination = "141.30.56.199/32";
+          Metric = 200;
+        };
+      }];
+    };
+
     networks."10-wlan" = {
       matchConfig.Name = "wlp3s0";
       networkConfig = {
@@ -180,6 +204,18 @@
       # 172.16.0.0/12
       # 192.168.0.0/16
       routes = [
+        {
+          routeConfig = {
+            Destination = "141.30.1.1/32";
+            Metric = 99;
+          };
+        }
+        {
+          routeConfig = {
+            Destination = "141.76.14.1/32";
+            Metric = 99;
+          };
+        }
         {
           routeConfig = {
             Destination = "141.30.0.0/16";
@@ -292,7 +328,7 @@
         wireguardPeerConfig = {
           PublicKey = "iriQ7Bi5ANixvCOV6EwLcxKCnwBt6hexn+5D4lTGhyY=";
           Endpoint = "172.26.63.120:51820";
-          AllowedIPs = [ "10.65.89.0/24" "141.30.174.0/24" ];
+          AllowedIPs = [ "10.65.89.0/24" "10.65.90.0/24" ];
           PersistentKeepalive = 25;
         };
       }];
@@ -311,8 +347,8 @@
         {
           routeConfig = {
             Gateway = "10.65.89.2";
-            Destination = "141.30.174.0/24";
-            Metric = 290;
+            Destination = "10.65.90.0/24";
+            Metric = 300;
           };
         }
       ];
