@@ -288,6 +288,13 @@
         {
           routeConfig = {
             Gateway = "172.20.76.225";
+            Destination = "172.20.73.8";
+            Metric = 99;
+          };
+        }
+        {
+          routeConfig = {
+            Gateway = "172.20.76.225";
             Destination = "172.22.99.0/24";
             Metric = 290;
           };
