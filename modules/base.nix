@@ -84,6 +84,8 @@
     '';
   };
 
+  users.users.root.shell = pkgs.zsh;
+
   # disable ConnectionNotifier of blueman
   # https://github.com/blueman-project/blueman/issues/1556#issuecomment-882857426
   programs.dconf.enable = true;
