@@ -1,8 +1,7 @@
 { config, pkgs, secrets, ... }:
 
 {
-  imports =
-    [ ./i3/common.nix ./hardware-configuration.nix ./networking.nix ];
+  imports = [ ./i3/common.nix ./hardware-configuration.nix ./networking.nix ];
 
   system.stateVersion = "19.03";
 
@@ -153,7 +152,16 @@
     ];
   };
 
+  hardware.opengl.enable = true;
   hardware.opengl.driSupport32Bit = true;
+
+  hardware.opengl.extraPackages = with pkgs; [ amdvlk ];
+  # For 32 bit applications 
+  # Only available on unstable
+  hardware.opengl.extraPackages32 = with pkgs; [ driversi686Linux.amdvlk ];
+
+  services.xserver.videoDrivers = [ "amdgpu" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
 
   systemd.services = {
     user-backlight-brightness-permissions = {
