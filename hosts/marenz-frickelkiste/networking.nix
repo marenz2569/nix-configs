@@ -19,6 +19,11 @@
     useDHCP = lib.mkDefault true;
     interfaces.enp6s0.useDHCP = lib.mkDefault true;
     interfaces.wlp3s0.useDHCP = lib.mkDefault true;
+    hosts = {
+      "10.65.90.10" = [ "alice-physec" ];
+      "10.65.90.11" = [ "eve-physec" ];
+      "10.65.90.12" = [ "bob-physec" ];
+    };
   };
 
   # workaround for networkd waiting for shit

@@ -23,8 +23,7 @@
     };
 
     sdr-nix = {
-      # url = "github:polygon/sdr.nix";
-      url = "github:marenz2569/sdr.nix/marenz-fixes";
+      url = "github:polygon/sdr.nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
