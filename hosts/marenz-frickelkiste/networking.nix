@@ -12,6 +12,9 @@
     sopsFile = "${secrets}/openconnect-tud.pass";
   };
 
+  # systemd.services.systemd-networkd.environment.SYSTEMD_LOG_LEVEL = "debug";
+  # systemd.services.systemd-resolved.environment.SYSTEMD_LOG_LEVEL = "debug";
+
   networking = {
     useNetworkd = true;
     usePredictableInterfaceNames = true;
@@ -123,7 +126,7 @@
     networks."09-wlan" = {
       matchConfig = {
         Name = "wlp3s0";
-        SSID = [ "eduroam" "C3D2" "ZW public" ];
+        SSID = [ "eduroam" "C3D2" "\"ZW public\"" ];
       };
       networkConfig = {
         DHCP = "yes";
@@ -282,6 +285,7 @@
         Address = "172.20.76.230/28";
         IPv6AcceptRA = true;
         DNS = "172.20.73.8";
+        DNSSEC = "no";
         Domains = [
           "~hq.c3d2.de"
           "~serv.zentralwerk.org"
@@ -292,35 +296,30 @@
       routes = [
         {
           routeConfig = {
-            Gateway = "172.20.76.225";
-            Destination = "172.20.73.8";
+            Destination = "172.20.73.8/32";
             Metric = 99;
           };
         }
         {
           routeConfig = {
-            Gateway = "172.20.76.225";
             Destination = "172.22.99.0/24";
             Metric = 290;
           };
         }
         {
           routeConfig = {
-            Gateway = "172.20.76.225";
             Destination = "172.20.73.0/25";
             Metric = 290;
           };
         }
         {
           routeConfig = {
-            Gateway = "172.20.76.225";
             Destination = "172.20.77.0/27";
             Metric = 290;
           };
         }
         {
           routeConfig = {
-            Gateway = "172.20.76.225";
             Destination = "172.20.76.224/28";
             Metric = 290;
           };
@@ -351,14 +350,12 @@
       routes = [
         {
           routeConfig = {
-            Gateway = "10.65.89.1";
             Destination = "10.65.89.0/24";
             Metric = 300;
           };
         }
         {
           routeConfig = {
-            Gateway = "10.65.89.2";
             Destination = "10.65.90.0/24";
             Metric = 300;
           };
