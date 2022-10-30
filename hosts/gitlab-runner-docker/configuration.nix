@@ -4,7 +4,8 @@
 
   microvm = {
     hypervisor = "qemu";
-    mem = 8192;
+    # 1G RAM per core
+    mem = 16384;
     vcpu = 16;
     interfaces = [{
       type = "tap";
