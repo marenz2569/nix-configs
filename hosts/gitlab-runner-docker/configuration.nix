@@ -52,7 +52,7 @@
         # File should contain at least these two variables:
         # `CI_SERVER_URL`
         # `REGISTRATION_TOKEN`
-        registrationConfigFile = sops.secrets.gitlab-runner-registration.path;
+        registrationConfigFile = config.sops.secrets.gitlab-runner-registration.path;
         dockerImage = "docker:stable";
         dockerVolumes = [ "/var/run/docker.sock:/var/run/docker.sock" ];
         tagList = [ "docker-images" ];
