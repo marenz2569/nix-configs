@@ -27,16 +27,25 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+
+    microvm = {
+      url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, nixos-hardware
-    , nix-matlab, sdr-nix, ... }@attrs:
+    , nix-matlab, sdr-nix, microvm, ... }@attrs:
     let
       inherit (nixpkgs) lib;
 
       systems = [ "x86_64-linux" "aarch64-linux" ];
 
-      overlays = import ./overlays { inherit nixpkgs-unstable; inherit sdr-nix; };
+      overlays = import ./overlays {
+        inherit nixpkgs-unstable;
+        inherit sdr-nix;
+      };
 
       packages = system:
         let
@@ -70,8 +79,14 @@
           (packages system) // (lib.mapAttrs' (name: value:
             lib.nameValuePair (name + "-vm") (value.config.system.build.vm))
             (nixosConfigurationsForSystem system));
-      in builtins.listToAttrs (builtins.map
-        (system: lib.nameValuePair system (packagesForSystem system)) systems);
+      in lib.recursiveUpdate (builtins.listToAttrs (builtins.map
+        (system: lib.nameValuePair system (packagesForSystem system))
+        systems)) {
+          "x86_64-linux" = {
+            gitlab-runner-docker-microvm =
+              self.nixosConfigurations.gitlab-runner-docker.config.microvm.declaredRunner;
+          };
+        };
 
       nixosConfigurations.marenz-frickelkiste = lib.nixosSystem {
         system = "x86_64-linux";
@@ -113,6 +128,17 @@
           ./modules/base.nix
           sops-nix.nixosModules.sops
           { nixpkgs.overlays = [ overlays ]; }
+        ];
+      };
+
+      nixosConfigurations.gitlab-runner-docker = lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = attrs;
+        modules = [
+          ./hosts/gitlab-runner-docker
+          ./modules/base.nix
+          sops-nix.nixosModules.sops
+          microvm.nixosModules.microvm
         ];
       };
     };

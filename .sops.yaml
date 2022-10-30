@@ -34,3 +34,8 @@ creation_rules:
         - *admin_marenz2
         age:
         - *controller-physec
+  - path_regex: secrets/gitlab-runner-docker/[^/]+\.*$
+    key_groups:
+      - pgp:
+        - *admin_marenz1
+        - *admin_marenz2

@@ -31,6 +31,29 @@
         "type": "github"
       }
     },
+    "microvm": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1666576115,
+        "narHash": "sha256-602l4N7Cde1t4tHcBSgHbCWN8rnn+q41nIslpcJPY3c=",
+        "owner": "astro",
+        "repo": "microvm.nix",
+        "rev": "9686131d02d8f91a0b440026eb2f308d858269b1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "astro",
+        "repo": "microvm.nix",
+        "type": "github"
+      }
+    },
     "nix-matlab": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -102,6 +125,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "microvm": "microvm",
         "nix-matlab": "nix-matlab",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
@@ -137,11 +161,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1666643308,
-        "narHash": "sha256-n22vOYyHPmfTwh1pt/HkDfmUIn0Y9yWm/nvEJA+HumE=",
+        "lastModified": 1667145849,
+        "narHash": "sha256-mV+C/3L39vXCuQ64oJcIRFHe8bD2MvzIsLfrRASq3ks=",
         "ref": "refs/heads/master",
-        "rev": "ebcb749bc19defa110b96b6def14c27478080fde",
-        "revCount": 89,
+        "rev": "50afc84311dbba83c0f2aee419d442d430fe1936",
+        "revCount": 90,
         "type": "git",
         "url": "ssh://git@github.com/marenz2569/nix-configs-secrets.git"
       },
