@@ -14,6 +14,7 @@
 
     networks."10-ether" = {
       matchConfig.PermanentMACAddress = "94:c6:91:11:c9:d2";
+      linkConfig.RequiredForOnline = "no";
       networkConfig = {
         DHCP = "yes";
         IPv6AcceptRA = true;
@@ -89,6 +90,10 @@
         host bob {
           hardware ethernet 94:83:c4:1b:d2:2f;
           fixed-address 10.65.90.12;
+        }
+        host alice2 {
+          hardware ethernet c0:4a:00:39:4e:fb;
+          fixed-address 10.65.90.20;
         }
       }
     '';
