@@ -1,4 +1,4 @@
-{ secrets, config, ... }: {
+{ secrets, config, lib, ... }: {
   system.stateVersion = "22.05";
   networking.hostName = "gitlab-runner-docker";
 
@@ -52,7 +52,8 @@
         # File should contain at least these two variables:
         # `CI_SERVER_URL`
         # `REGISTRATION_TOKEN`
-        registrationConfigFile = config.sops.secrets.gitlab-runner-registration.path;
+        registrationConfigFile =
+          config.sops.secrets.gitlab-runner-registration.path;
         dockerImage = "docker:stable";
         dockerVolumes = [ "/var/run/docker.sock:/var/run/docker.sock" ];
         tagList = [ "docker-images" ];
