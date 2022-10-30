@@ -31,7 +31,7 @@
   services.openssh = {
     enable = true;
     passwordAuthentication = false;
-    forwardX11 = true;
+    forwardX11 = lib.mkDefault config.programs.ssh.setXAuthLocation;
     ports = [ 22 ];
   };
 
