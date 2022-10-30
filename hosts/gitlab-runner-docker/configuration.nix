@@ -3,7 +3,7 @@
   networking.hostName = "gitlab-runner-docker";
 
   microvm = {
-    hypervisor = "cloud-hypervisor";
+    hypervisor = "qemu";
     mem = 8192;
     vcpu = 16;
     interfaces = [{
