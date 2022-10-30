@@ -94,6 +94,7 @@
         modules = [
           ./hosts/marenz-frickelkiste/configuration.nix
           ./modules/base.nix
+          ./modules/host.nix
           ./modules/graphical.nix
           ./modules/microcontroller.nix
           ./modules/openvpn-bad5.nix
@@ -115,6 +116,7 @@
         modules = [
           ./hosts/wg-bar-ma
           ./modules/base.nix
+          ./modules/host.nix
           sops-nix.nixosModules.sops
           { nixpkgs.overlays = [ overlays ]; }
         ];
@@ -126,6 +128,7 @@
         modules = [
           ./hosts/controller-physec
           ./modules/base.nix
+          ./modules/host.nix
           sops-nix.nixosModules.sops
           { nixpkgs.overlays = [ overlays ]; }
         ];
