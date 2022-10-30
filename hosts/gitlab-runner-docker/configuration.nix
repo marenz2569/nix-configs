@@ -20,14 +20,14 @@
         socket = "store.socket";
       }
       {
-        source = "/var/lib/microvms/marenz-gitlab-docker-runner/etc";
+        source = "/var/lib/microvms/gitlab-docker-runner/etc";
         mountPoint = "/etc";
         tag = "etc";
         proto = "virtiofs";
         socket = "etc.socket";
       }
       {
-        source = "/var/lib/microvms/marenz-gitlab-docker-runner/var";
+        source = "/var/lib/microvms/gitlab-docker-runner/var";
         mountPoint = "/var";
         tag = "var";
         proto = "virtiofs";
