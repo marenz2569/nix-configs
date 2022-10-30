@@ -139,6 +139,7 @@
           ./modules/base.nix
           sops-nix.nixosModules.sops
           microvm.nixosModules.microvm
+          { nixpkgs.overlays = [ overlays ]; }
         ];
       };
     };
