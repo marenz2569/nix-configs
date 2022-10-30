@@ -4,6 +4,7 @@ keys:
   - &marenz-frickelkiste age1vk2v0wk4g4uym54f7ldjrugwe86qhlu28dektp7cjlldadqrrg7sdze6x9
   - &wg-bar-ma age1xwszjcwnkyshugls5etvqj8kn4jxw3q53cynfg9ufrma6m7vnywsvpp2lk
   - &controller-physec age153yu8l7wdx6e7zs63pvwrpzzqmljz5tp5ucx6yzxqs62n9wynvuq5czkqt
+  - &gitlab-runner-docker age1j35a2gpr9e22gf966xj3mfu03h87nvy0nfgf7edgc65vcf8de4sqmp7xhf
 
 creation_rules:
   - path_regex: secrets/[^/]+\.*$
@@ -39,3 +40,5 @@ creation_rules:
       - pgp:
         - *admin_marenz1
         - *admin_marenz2
+        age:
+        - *gitlab-runner-docker
