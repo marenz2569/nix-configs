@@ -8,7 +8,7 @@
     vcpu = 16;
     interfaces = [{
       type = "tap";
-      id = "serv-marenz-gitlab-runner-docker";
+      id = "serv-mrnz-glrd";
       mac = "02:f0:35:5d:65:82";
     }];
     shares = [
