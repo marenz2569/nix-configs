@@ -142,7 +142,13 @@
           ./modules/base.nix
           sops-nix.nixosModules.sops
           microvm.nixosModules.microvm
-          { nixpkgs.overlays = [ overlays ]; }
+          {
+            nixpkgs.overlays = [
+              # use stable kernel instead. microvm uses linuxPackages_latest per default
+              (self: super: { linuxPackages_latest = self.linuxPackages; })
+              overlays
+            ];
+          }
         ];
       };
     };
