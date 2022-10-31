@@ -61,4 +61,6 @@
       };
     };
   };
+
+  virtualisation.docker.extraOptions = "--storage-opt dm.basesize=20G";
 }
