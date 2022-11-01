@@ -103,12 +103,12 @@
       }
       {
         hostName = "eve2";
-        ethernetAddress = "30:b5:c2:c8:8f:7f";
+        ethernetAddress = "30:b5:c2:c8:8f:81";
         ipAddress = "10.65.90.21";
       }
       {
         hostName = "bob2";
-        ethernetAddress = "c0:4a:00:39:4f:73";
+        ethernetAddress = "c0:4a:00:39:4f:75";
         ipAddress = "10.65.90.22";
       }
     ];
