@@ -46,7 +46,8 @@
 
   services.gitlab-runner = {
     enable = true;
-    concurrent = 2;
+    # Leave this limit at one! Things might break.
+    concurrent = 1;
     gracefulTimeout = "1h";
     services = {
       docker-images = {
