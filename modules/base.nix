@@ -77,4 +77,6 @@
     dnssec = "true";
     fallbackDns = [ "1.1.1.1" ];
   };
+
+  services.lldpd.enable = true;
 }
