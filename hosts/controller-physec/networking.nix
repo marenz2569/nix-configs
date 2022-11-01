@@ -3,7 +3,7 @@
 
   networking = {
     useNetworkd = true;
-    usePredictableInterfaceNames = true;
+    usePredictableInterfaceNames = lib.mkForce true;
     wireguard.enable = true;
     useDHCP = lib.mkDefault true;
     interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
@@ -113,4 +113,7 @@
       }
     ];
   };
+
+  systemd.services."dhcpd4".requires = [ "systemd-network-wait-online@enp0s20f0u3.service" ];
+  systemd.services."dhcpd4".after = lib.mkForce [ "systemd-network-wait-online@enp0s20f0u3.service" ];
 }
