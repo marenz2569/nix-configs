@@ -78,24 +78,39 @@
         option broadcast-address 10.65.90.255;
         option routers 10.65.90.1;
         interface enp0s20f0u3;
-
-        host alice {
-          hardware ethernet 94:83:c4:1b:cf:2f;
-          fixed-address 10.65.90.10;
-        }
-        host eve {
-          hardware ethernet 94:83:c4:1b:d1:90;
-          fixed-address 10.65.90.11;
-        }
-        host bob {
-          hardware ethernet 94:83:c4:1b:d2:2f;
-          fixed-address 10.65.90.12;
-        }
-        host alice2 {
-          hardware ethernet c0:4a:00:39:4e:fb;
-          fixed-address 10.65.90.20;
-        }
       }
     '';
+    machines = [
+      {
+        hostName = "alice";
+        ethernetAddress = "94:83:c4:1b:cf:2f";
+        ipAddress = "10.65.90.10";
+      }
+      {
+        hostName = "eve";
+        ethernetAddress = "94:83:c4:1b:d1:90";
+        ipAddress = "10.65.90.11";
+      }
+      {
+        hostName = "bob";
+        ethernetAddress = "94:83:c4:1b:d2:2f";
+        ipAddress = "10.65.90.12";
+      }
+      {
+        hostName = "alice2";
+        ethernetAddress = "c0:4a:00:39:4e:fb";
+        ipAddress = "10.65.90.20";
+      }
+      {
+        hostName = "eve2";
+        ethernetAddress = "30:b5:c2:c8:8f:7f";
+        ipAddress = "10.65.90.21";
+      }
+      {
+        hostName = "bob2";
+        ethernetAddress = "c0:4a:00:39:4f:73";
+        ipAddress = "10.65.90.22";
+      }
+    ];
   };
 }
