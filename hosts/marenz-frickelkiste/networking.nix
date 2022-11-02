@@ -109,13 +109,18 @@
   systemd.network = {
     enable = true;
 
+    # always use cloudflare for dns. dnssec is fucked up in too many networks...
     networks."10-ether" = {
       matchConfig.Name = "enp6s0";
       networkConfig = {
         DHCP = "yes";
         IPv6AcceptRA = true;
+        DNS = "1.1.1.1";
       };
-      dhcpV4Config.RouteMetric = 100;
+      dhcpV4Config = {
+        RouteMetric = 100;
+        UseDNS = false;
+      };
       routes = [{
         routeConfig = {
           Gateway = "_dhcp4";
@@ -125,37 +130,18 @@
       }];
     };
 
-    # make dns in tud and zw work work...
-    networks."09-wlan" = {
-      matchConfig = {
-        Name = "wlp3s0";
-        SSID = [ "eduroam" "C3D2" "\"ZW public\"" ];
-      };
+    # always use cloudflare for dns. dnssec is fucked up in too many networks...
+    networks."10-wlan" = {
+      matchConfig.Name = "wlp3s0";
       networkConfig = {
         DHCP = "yes";
         IPv6AcceptRA = true;
         DNS = "1.1.1.1";
       };
       dhcpV4Config = {
-        RouteMetric = 200;
+        RouteMetric = 100;
         UseDNS = false;
       };
-      routes = [{
-        routeConfig = {
-          Gateway = "_dhcp4";
-          Destination = "141.30.56.199/32";
-          Metric = 200;
-        };
-      }];
-    };
-
-    networks."10-wlan" = {
-      matchConfig.Name = "wlp3s0";
-      networkConfig = {
-        DHCP = "yes";
-        IPv6AcceptRA = true;
-      };
-      dhcpV4Config.RouteMetric = 200;
       routes = [{
         routeConfig = {
           Gateway = "_dhcp4";
