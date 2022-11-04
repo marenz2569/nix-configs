@@ -27,7 +27,19 @@
           local HASH=$(sha256sum $1 | awk '{ print $1; }')
         fi
 
-        curl -Lf --header "PRIVATE-TOKEN: $TOKEN" "https://git.comnets.net/api/v4/projects/s2599166%2Fcsi-testbed-openwrt/jobs/artifacts/master/raw/$1?job=$2" --output $1 || { echo "Download failed"; exit 1; }
+        local STATUS_CODE=$(curl -Lf -w "%{http_code}" --header "PRIVATE-TOKEN: $TOKEN" "https://git.comnets.net/api/v4/projects/s2599166%2Fcsi-testbed-openwrt/jobs/artifacts/master/raw/$1?job=$2" --output $1 || true)
+
+        if [[ "$STATUS_CODE" -eq "404" ]]; then
+          echo "Build not found or no artifacts. Failed downloading $1. Skipping."
+          RES=1
+          return
+        fi
+ 
+        if [[ "$STATUS_CODE" -ne "200" ]]; then
+          echo "Failed downloading with HTTP status $STATUS_CODE."
+          RES=1
+          return
+        fi
 
         if [ -n $HASH ]; then
           local OUTPUT_HASH=$(sha256sum $1 | awk '{ print $1; }')
