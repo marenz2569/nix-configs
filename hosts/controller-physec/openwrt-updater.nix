@@ -24,7 +24,7 @@
         local HASH
 
         if [ -f "$1" ]; then
-          local HASH=$(sha256sum $1 | awk '{ print $1; }')
+          HASH=$(sha256sum $1 | awk '{ print $1; }')
         fi
 
         local STATUS_CODE=$(curl -Lf -w "%{http_code}" --header "PRIVATE-TOKEN: $TOKEN" "https://git.comnets.net/api/v4/projects/s2599166%2Fcsi-testbed-openwrt/jobs/artifacts/master/raw/$1?job=$2" --output $1 || true)
