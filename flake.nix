@@ -69,6 +69,11 @@
               #!${pkgs.runtimeShell} -ex
               ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#controller-physec --target-host controller-physec --use-substitutes "$@"
             '';
+          cal-marenz-nixos-rebuild =
+            pkgs.writeScriptBin "controller-physec-nixos-rebuild" ''
+              #!${pkgs.runtimeShell} -ex
+              ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#cal-marenz --target-host cal-marenz --use-substitutes "$@"
+            '';
         };
     in {
       packages = let
@@ -148,6 +153,19 @@
               (self: super: { linuxPackages_latest = self.linuxPackages; })
               overlays
             ];
+          }
+        ];
+      };
+
+      nixosConfigurations.cal-marenz = lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = attrs;
+        modules = [
+          ./hosts/cal-marenz
+          ./modules/base.nix
+          sops-nix.nixosModules.sops
+          {
+            nixpkgs.overlays = [ overlays ];
           }
         ];
       };

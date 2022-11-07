@@ -5,6 +5,7 @@ keys:
   - &wg-bar-ma age1xwszjcwnkyshugls5etvqj8kn4jxw3q53cynfg9ufrma6m7vnywsvpp2lk
   - &controller-physec age153yu8l7wdx6e7zs63pvwrpzzqmljz5tp5ucx6yzxqs62n9wynvuq5czkqt
   - &gitlab-runner-docker age1j35a2gpr9e22gf966xj3mfu03h87nvy0nfgf7edgc65vcf8de4sqmp7xhf
+  - &cal-marenz age14mta5a24a4xj0erlvhq4l7yn47ww59glxp2du9mdz5cscrkyf3asp7tdu7
 
 creation_rules:
   - path_regex: secrets/[^/]+\.*$
@@ -42,3 +43,10 @@ creation_rules:
         - *admin_marenz2
         age:
         - *gitlab-runner-docker
+  - path_regex: secrets/cal-marenz/[^/]+\.*$
+    key_groups:
+      - pgp:
+        - *admin_marenz1
+        - *admin_marenz2
+        age:
+        - *cal-marenz

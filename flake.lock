@@ -161,11 +161,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1667423716,
-        "narHash": "sha256-Cn9+QjFXlBEqXEt9wKWDwgLBWdLaMBTo9lTGXLETarU=",
+        "lastModified": 1667844601,
+        "narHash": "sha256-LTMDJwlnItohoJuD72l0cTLnzZ9Bd1c2eQo6KyFcdZY=",
         "ref": "refs/heads/master",
-        "rev": "f87d046a6188f2d77b2ede2284a562deff7cec18",
-        "revCount": 92,
+        "rev": "83f3d8465d188251f1604352cba0aba4c7e25df8",
+        "revCount": 93,
         "type": "git",
         "url": "ssh://git@github.com/marenz2569/nix-configs-secrets.git"
       },
