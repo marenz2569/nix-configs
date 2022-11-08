@@ -46,11 +46,11 @@
 
   services.gitlab-runner = {
     enable = true;
-    concurrent = 2;
+    concurrent = 1;
     gracefulTimeout = "1h";
     services = {
       docker-images = {
-        limit = 2;
+        limit = 1;
         # File should contain at least these two variables:
         # `CI_SERVER_URL`
         # `REGISTRATION_TOKEN`
