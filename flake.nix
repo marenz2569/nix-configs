@@ -33,10 +33,22 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+
+    naersk = {
+      url = "github:nix-community/naersk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    csi-collector = {
+      url = "git+ssh://git@git.comnets.net/s2599166/csi-collector-server.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.naersk.follows = "naersk";
+      inputs.utils.follows = "flake-utils";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, nixos-hardware
-    , nix-matlab, sdr-nix, microvm, ... }@attrs:
+    , nix-matlab, sdr-nix, microvm, csi-collector, ... }@attrs:
     let
       inherit (nixpkgs) lib;
 
@@ -121,6 +133,7 @@
         modules = [
           ./hosts/wg-bar-ma
           ./modules/base.nix
+          ./modules/collect-garbage.nix
           ./modules/host.nix
           sops-nix.nixosModules.sops
           { nixpkgs.overlays = [ overlays ]; }
@@ -133,9 +146,10 @@
         modules = [
           ./hosts/controller-physec
           ./modules/base.nix
+          ./modules/collect-garbage.nix
           ./modules/host.nix
           sops-nix.nixosModules.sops
-          { nixpkgs.overlays = [ overlays ]; }
+          { nixpkgs.overlays = [ overlays csi-collector.overlays.default ]; }
         ];
       };
 
@@ -163,10 +177,9 @@
         modules = [
           ./hosts/cal-marenz
           ./modules/base.nix
+          ./modules/collect-garbage.nix
           sops-nix.nixosModules.sops
-          {
-            nixpkgs.overlays = [ overlays ];
-          }
+          { nixpkgs.overlays = [ overlays ]; }
         ];
       };
     };

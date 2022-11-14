@@ -7,6 +7,8 @@
     wireguard.enable = true;
     useDHCP = lib.mkDefault true;
     interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
+    # open port 8000 on interface towards routers
+    firewall.interfaces."enp0s20f0u3".allowedTCPPorts = [ 8000 ];
   };
 
   systemd.network = {
