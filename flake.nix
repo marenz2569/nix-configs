@@ -47,7 +47,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, nixos-hardware
+  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, secrets, nixos-hardware
     , nix-matlab, sdr-nix, microvm, csi-collector, ... }@attrs:
     let
       inherit (nixpkgs) lib;
@@ -107,7 +107,10 @@
 
       nixosConfigurations.marenz-frickelkiste = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = attrs;
+        specialArgs = {
+          inherit self;
+          inherit secrets;
+        };
         modules = [
           ./hosts/marenz-frickelkiste/configuration.nix
           ./modules/base.nix
@@ -129,7 +132,10 @@
 
       nixosConfigurations.wg-bar-ma = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = attrs;
+        specialArgs = {
+          inherit self;
+          inherit secrets;
+        };
         modules = [
           ./hosts/wg-bar-ma
           ./modules/base.nix
@@ -142,7 +148,10 @@
 
       nixosConfigurations.controller-physec = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = attrs;
+        specialArgs = {
+          inherit self;
+          inherit secrets;
+        };
         modules = [
           ./hosts/controller-physec
           ./modules/base.nix
@@ -155,7 +164,10 @@
 
       nixosConfigurations.gitlab-runner-docker = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = attrs;
+        specialArgs = {
+          inherit self;
+          inherit secrets;
+        };
         modules = [
           ./hosts/gitlab-runner-docker
           ./modules/base.nix
@@ -173,7 +185,10 @@
 
       nixosConfigurations.cal-marenz = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = attrs;
+        specialArgs = {
+          inherit self;
+          inherit secrets;
+        };
         modules = [
           ./hosts/cal-marenz
           ./modules/base.nix
