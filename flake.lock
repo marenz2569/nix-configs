@@ -13,11 +13,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1668429876,
-        "narHash": "sha256-LwXV6a+piF1DLCnwmy+1HpY0gmn0DnF8jeOd3ZLdYds=",
+        "lastModified": 1668732633,
+        "narHash": "sha256-A0PIGeQ/nEftMz+Faw4Moj7RJrZVgeow/kdE/VXWhF0=",
         "ref": "refs/heads/master",
-        "rev": "9cdd5fadc6b25132212871a291f4bd392675871a",
-        "revCount": 3,
+        "rev": "67aed00a32d89055734ca310d43c55fd4b481fef",
+        "revCount": 5,
         "type": "git",
         "url": "ssh://git@git.comnets.net/s2599166/csi-collector-server.git"
       },
