@@ -27,4 +27,34 @@
       Restart = "always";
     };
   };
+
+  systemd.services."csi-collector-gc" = {
+    path = with pkgs; [ coreutils findutils ];
+    script = ''
+      for folder in ${config.users.users.csi-collector.home}/*;
+      do
+        count=$(find $folder -mindepth 2 -maxdepth 2 | wc -l)
+
+        if [[ $count -ne 4 ]]; then
+          echo "Deleting folder $folder with $count/4 measurements"
+          rm -r $folder
+        fi
+      done
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = config.users.users.csi-collector.name;
+    };
+  };
+  systemd.timers."csi-collector-gc" = {
+    wantedBy = [ "timers.target" ];
+    partOf = [ "csi-collector-gc.service" ];
+    timerConfig = {
+      # start five minutes after boot
+      OnBootSec = 5 * 60;
+      # start five minutes after last exit
+      OnUnitInactiveSec = 5 * 60;
+      Unit = "csi-collector-gc";
+    };
+  };
 }
