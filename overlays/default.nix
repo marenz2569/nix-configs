@@ -32,4 +32,5 @@ in {
     pname = "SigDigger";
   });
   vesc-tool = prev.libsForQt5.callPackage ./vesc-tool { };
+  sieve = prev.callPackage ./sieve { };
 }
