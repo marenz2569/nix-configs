@@ -31,4 +31,5 @@ in {
   SigDigger = sdr-nix.packages.${prev.system}.sigdigger.overrideAttrs(_oldAttrs: {
     pname = "SigDigger";
   });
+  vesc-tool = prev.libsForQt5.callPackage ./vesc-tool { };
 }

@@ -1,0 +1,35 @@
+diff --git a/vesc_tool.pro b/vesc_tool.pro
+index a1609c0..8edc545 100644
+--- a/vesc_tool.pro
++++ b/vesc_tool.pro
+@@ -56,16 +56,10 @@ ios: {
+ # sudo rm -rf /var/lib/bluetooth/*
+ # sudo service bluetooth restart
+ 
+-# Bluetooth available
+-DEFINES += HAS_BLUETOOTH
+-
+ # CAN bus available
+ # Adding serialbus to Qt seems to break the serial port on static builds. TODO: Figure out why.
+ #DEFINES += HAS_CANBUS
+ 
+-# Positioning
+-DEFINES += HAS_POS
+-
+ !ios: {
+     QT       += printsupport
+ !android: {
+@@ -164,11 +158,8 @@ release_win {
+     UI_DIR = build/win/obj
+ }
+ 
+-release_lin {
+-    # http://micro.nicholaswilson.me.uk/post/31855915892/rules-of-static-linking-libstdc-libc-libgcc
+-    # http://insanecoding.blogspot.se/2012/07/creating-portable-linux-binaries.html
+-    QMAKE_LFLAGS += -static-libstdc++ -static-libgcc
+-    DESTDIR = build/lin
++release {
++		DESTDIR = $$PREFIX/bin
+     OBJECTS_DIR = build/lin/obj
+     MOC_DIR = build/lin/obj
+     RCC_DIR = build/lin/obj
