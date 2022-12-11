@@ -46,7 +46,7 @@
 
   services.gitlab-runner = {
     enable = true;
-    concurrent = 1;
+    settings.concurrent = 1;
     gracefulTimeout = "1h";
     services = {
       docker-images = {

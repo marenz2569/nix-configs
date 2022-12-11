@@ -65,5 +65,6 @@
     solvespace
     ghidra
     freecad
+    sieve
   ];
 }

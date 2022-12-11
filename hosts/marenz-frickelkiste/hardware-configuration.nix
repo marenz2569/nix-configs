@@ -47,7 +47,7 @@
 
   swapDevices = [ ];
 
-  nix.maxJobs = lib.mkDefault 16;
+  nix.settings.max-jobs = lib.mkDefault 16;
   powerManagement.cpuFreqGovernor = lib.mkDefault "schedutil";
 
   hardware.cpu.amd.updateMicrocode =

@@ -2,13 +2,13 @@
 let rpath = lib.makeLibraryPath [ fontconfig freetype dbus zlib ];
 in stdenv.mkDerivation rec {
   pname = "vampir";
-  version = "10.1.0";
+  version = "10.2.0";
 
   # fetchurlBoot uses nix to fetch the package with the netrc-file option in nix.conf
   src = stdenv.fetchurlBoot {
     url =
       "https://intern.vampir.eu/Release_${version}/vampir-${version}-linux-x86_64-setup.sh";
-    sha256 = "sha256-an99fpKLKEqRb4AvXLGIOjy1R9ERqUsV2iw2GljcQQo=";
+    sha256 = "sha256-ImzBCATeRabRhg/XHHneG+zEqySV5BJYqVSJsvS5U8I=";
   };
 
   # make shure we don't leak the binary

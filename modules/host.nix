@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  nix.autoOptimiseStore = true;
+  nix.settings.auto-optimise-store = true;
 
   services.openssh.forwardX11 = true;
 
@@ -38,6 +38,7 @@
   environment.variables = { EDITOR = "vim"; };
 
   environment.systemPackages = with pkgs; [
+    nodejs
     ((vim_configurable.override { }).customize {
       name = "vim";
       vimrcConfig = {
@@ -47,10 +48,12 @@
             vim-airline
             vim-airline-themes
             tagbar
-            YouCompleteMe
+            #YouCompleteMe
             vim-hoogle
             haskell-vim
             elm-vim
+            coc-nvim
+            coc-tabnine
             coc-flutter
             vim-flutter
             dart-vim-plugin

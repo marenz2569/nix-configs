@@ -13,7 +13,7 @@ let
 
     src = builtins.fetchurl {
       url = "https://out7.hex-rays.com/files/${binary}";
-      sha256 = "093wj5w3amwk2jcbjl4hvl7cw4qkiim6i3iq964zl2p633z66drd";
+      sha256 = "sha256:045alqhgryzdzp708rcb4zs9ywj1f5gxgi2xlsfrbhn1v3lsbdfl";
     };
 
     phases = [ "installPhase" ];

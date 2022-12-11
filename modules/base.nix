@@ -5,9 +5,9 @@
     experimental-features = nix-command flakes
   '';
   nix.settings.extra-sandbox-paths = [ "${config.programs.ccache.cacheDir}" ];
-  nix.binaryCaches =
+  nix.settings.substituters =
     [ "https://dump-dvb.cachix.org" "https://nix-serve.hq.c3d2.de" ];
-  nix.binaryCachePublicKeys = [
+  nix.settings.trusted-public-keys = [
     "dump-dvb.cachix.org-1:+Dq7gqpQG4YlLA2X3xJsG1v3BrlUGGpVtUKWk0dTyUU="
     "nix-serve.hq.c3d2.de:KZRGGnwOYzys6pxgM8jlur36RmkJQ/y8y62e52fj1ps="
   ];
