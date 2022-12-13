@@ -60,7 +60,12 @@
     tigervnc
     wireshark-qt
     zoom-us
+
+    # zotero needs two other dependencies for ocr
     zotero
+    poppler_utils
+    tesseract
+
     prusa-slicer
     solvespace
     ghidra
