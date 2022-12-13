@@ -112,7 +112,7 @@
           inherit secrets;
         };
         modules = [
-          ./hosts/marenz-frickelkiste/configuration.nix
+          ./hosts/marenz-frickelkiste
           ./modules/base.nix
           ./modules/host.nix
           ./modules/graphical.nix

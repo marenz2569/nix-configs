@@ -1,8 +1,6 @@
 { config, pkgs, secrets, ... }:
 
 {
-  imports = [ ./i3/common.nix ./hardware-configuration.nix ./networking.nix ];
-
   system.stateVersion = "19.03";
 
   boot.tmpOnTmpfs = true;
