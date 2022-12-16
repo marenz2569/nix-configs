@@ -33,4 +33,5 @@ in {
   });
   vesc-tool = prev.libsForQt5.callPackage ./vesc-tool { };
   sieve = prev.callPackage ./sieve { };
+  rtlsdr-to-gqrx = prev.callPackage ./rtlsdr-to-gqrx { };
 }
