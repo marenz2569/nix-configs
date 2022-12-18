@@ -3,9 +3,6 @@ _final: prev:
 let
   pkgs-unstable = import nixpkgs-unstable { system = prev.system; };
   flutterPackages = prev.lib.recurseIntoAttrs (prev.callPackage "${nixpkgs-unstable}/pkgs/development/compilers/flutter" { });
-  bintrees = prev.callPackage ./bintrees { };
-  minepy = prev.callPackage ./minepy { };
-  pylstar = prev.callPackage ./pylstar { };
 in {
   gxs700 = prev.python3Packages.callPackage ./gxs700 { };
   st = prev.st.override { conf = builtins.readFile ./st/st.h; };
@@ -25,8 +22,12 @@ in {
   vesc-tool = prev.libsForQt5.callPackage ./vesc-tool { };
   sieve = prev.callPackage ./sieve { };
   rtlsdr-to-gqrx = prev.callPackage ./rtlsdr-to-gqrx { };
-  python39Packages.bintrees = bintrees;
-  python39Packages.minepy = minepy;
-  python39Packages.pylstar = pylstar;
-  python39Packages.netzob = prev.callPackage ./netzob { inherit bintrees; inherit minepy; inherit pylstar; };
+  python39 = prev.python39.override {
+    packageOverrides = final: prev: {
+      bintrees = final.callPackage ./bintrees { };
+      minepy = final.callPackage ./minepy { };
+      pylstar = final.callPackage ./pylstar { };
+      netzob = final.callPackage ./netzob { };
+    };
+  };
 }

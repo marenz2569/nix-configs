@@ -1,6 +1,5 @@
-{ lib, python39Packages, fetchFromGitHub, bintrees, minepy, pylstar, ... }:
+{ lib, buildPythonPackage, fetchFromGitHub, jsonpickle, pcapy-ng, netaddr, bitarray, numpy, colorama, bintrees, minepy, pylstar, getmac, ... }:
 
-with python39Packages;
 buildPythonPackage rec {
   pname = "netzob";
   version = "4ceefe5abaac1b9343dcc7e4ae28b2616bc3eb00";

@@ -1,6 +1,5 @@
-{ lib, python39Packages, fetchFromGitHub, ... }:
+{ lib, buildPythonPackage, cython, fetchFromGitHub, ... }:
 
-with python39Packages;
 buildPythonPackage rec {
   pname = "bintrees";
   version = "2.2.0";

@@ -1,6 +1,5 @@
-{ lib, python39Packages, fetchFromGitHub, ... }:
+{ lib, buildPythonPackage, fetchFromGitHub, numpy, ... }:
 
-with python39Packages;
 buildPythonPackage rec {
   pname = "minepy";
   version = "1.2.6";

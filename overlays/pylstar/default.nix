@@ -1,6 +1,5 @@
-{ lib, python39Packages, fetchFromGitHub, ... }:
+{ lib, buildPythonPackage, fetchFromGitHub, ... }:
 
-with python39Packages;
 buildPythonPackage rec {
   pname = "pylstar";
   version = "0.1.2";
