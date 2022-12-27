@@ -4,5 +4,6 @@
     ./hardware-configuration.nix
     ./networking.nix
     ./radicale.nix
+    ./ubnt.nix
   ];
 }

@@ -5,18 +5,10 @@
     owner = config.users.users.radicale.name;
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-
-  security.acme.acceptTerms = true;
-  security.acme.defaults.email = "webmaster@marenz.ee";
-
-  services.nginx = {
-    enable = true;
-    virtualHosts."cal.marenz.ee" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/".proxyPass = "http://localhost:5232";
-    };
+  services.nginx.virtualHosts."cal.marenz.ee" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/".proxyPass = "http://localhost:5232";
   };
 
   services.radicale = {
