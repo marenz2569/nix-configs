@@ -1,6 +1,9 @@
 { config, lib, ... }: {
   sops.secrets.wg-bad5-seckey.owner = config.users.users.systemd-network.name;
 
+  networking.firewall.allowedUDPPorts = [ 51820 ];
+  networking.wireguard.enable = true;
+
   networking.useNetworkd = lib.mkForce true;
   systemd.network = {
     enable = true;
@@ -35,21 +38,34 @@
       };
       wireguardConfig = {
         PrivateKeyFile = config.sops.secrets.wg-bad5-seckey.path;
+        ListenPort = 51820;
       };
-      wireguardPeers = [{
-        wireguardPeerConfig = {
-          PublicKey = "9iXE78rmMUWMZozAyWT5CHm+FsAsAN54AiDzJHS5A0c=";
-          Endpoint = "80.153.192.57:51820";
-          AllowedIPs = [ "10.0.1.0/24" "10.0.0.0/24" ];
-          PersistentKeepalive = 25;
-        };
-      }];
+      wireguardPeers = [
+        {
+          wireguardPeerConfig = {
+            PublicKey = "9iXE78rmMUWMZozAyWT5CHm+FsAsAN54AiDzJHS5A0c=";
+            Endpoint = "80.153.192.57:51820";
+            AllowedIPs = [ "10.0.1.1/32" "10.0.0.0/24" ];
+            PersistentKeepalive = 25;
+          };
+        }
+        {
+          wireguardPeerConfig = {
+            PublicKey = "X/buhhASrS05ehQdp7Dl2PPFyN4Jh7jzZ3j0fA60QVU=";
+            AllowedIPs = [ "10.0.1.3/32" ];
+            PersistentKeepalive = 25;
+          };
+        }
+      ];
     };
     networks."20-wg-bad5" = {
       matchConfig.Name = "wg-bad5";
-      networkConfig = { Address = "10.0.1.2/24"; };
       linkConfig = { RequiredForOnline = "no"; };
       routes = [{ routeConfig = { Destination = "10.0.0.0/24"; }; }];
+      networkConfig = {
+        Address = "10.0.1.2/24";
+        IPForward = "ipv4";
+      };
     };
   };
 }
