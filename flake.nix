@@ -45,10 +45,12 @@
       inputs.naersk.follows = "naersk";
       inputs.utils.follows = "flake-utils";
     };
+
+    zentralwerk.url = "git+https://gitea.c3d2.de/zentralwerk/network";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, secrets, nixos-hardware
-    , nix-matlab, sdr-nix, microvm, csi-collector, ... }@attrs:
+    , nix-matlab, sdr-nix, microvm, csi-collector, zentralwerk, ... }@attrs:
     let
       inherit (nixpkgs) lib;
 
@@ -100,10 +102,15 @@
         (system: lib.nameValuePair system (packagesForSystem system))
         systems)) {
           "x86_64-linux" = {
-            gitlab-runner-docker-microvm =
-              self.nixosConfigurations.gitlab-runner-docker.config.microvm.declaredRunner;
+        #    gitlab-runner-docker-microvm =
+        #      self.nixosConfigurations.gitlab-runner-docker.config.microvm.declaredRunner;
           };
         };
+
+      nixosModules.zentralwerk = {
+        _module.args = { inherit zentralwerk; };
+        imports = [ ./modules/zw-network.nix ./modules/zw-cluster-options.nix ];
+      };
 
       nixosConfigurations.marenz-frickelkiste = lib.nixosSystem {
         system = "x86_64-linux";
@@ -172,7 +179,7 @@
           ./hosts/gitlab-runner-docker
           ./modules/base.nix
           sops-nix.nixosModules.sops
-          microvm.nixosModules.microvm
+          self.nixosModules.zentralwerk
           {
             nixpkgs.overlays = [
               # use stable kernel instead. microvm uses linuxPackages_latest per default

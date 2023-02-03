@@ -1,41 +1,9 @@
-{ secrets, config, lib, ... }: {
+{ lib, config, secrets, ... }:
+{
   system.stateVersion = "22.05";
-  networking.hostName = "gitlab-runner-docker";
-
-  microvm = {
-    hypervisor = "qemu";
-    # 1G RAM per core
-    mem = 16384;
-    vcpu = 16;
-    interfaces = [{
-      type = "tap";
-      id = "serv-mrnz-glrd";
-      mac = "02:f0:35:5d:65:82";
-    }];
-    shares = [
-      {
-        source = "/nix/store";
-        mountPoint = "/nix/.ro-store";
-        tag = "store";
-        proto = "virtiofs";
-        socket = "store.socket";
-      }
-      {
-        source = "/var/lib/microvms/gitlab-runner-docker/etc";
-        mountPoint = "/etc";
-        tag = "etc";
-        proto = "virtiofs";
-        socket = "etc.socket";
-      }
-      {
-        source = "/var/lib/microvms/gitlab-runner-docker/var";
-        mountPoint = "/var";
-        tag = "var";
-        proto = "virtiofs";
-        socket = "var.socket";
-      }
-    ];
-  };
+  networking.hostName = "marenz";
+  # TODO fix zw network flake
+  # "gitlab-runner-docker";
 
   sops.defaultSopsFile = "${secrets}/gitlab-runner-docker/secrets.yaml";
 
@@ -56,6 +24,8 @@
         # `REGISTRATION_TOKEN`
         registrationConfigFile =
           config.sops.secrets.gitlab-runner-registration.path;
+        # 100 MB
+        registrationFlags = [ "--output-limit 102400" ];
         dockerImage = "docker:stable";
         dockerVolumes = [ "/var/run/docker.sock:/var/run/docker.sock" ];
         tagList = [ "docker-images" ];
@@ -63,5 +33,9 @@
     };
   };
 
-  virtualisation.docker.extraOptions = "--storage-opt dm.basesize=20G";
+  security.apparmor.enable = lib.mkForce false;
+
+  virtualisation.docker.storageDriver = "devicemapper";
+  virtualisation.docker.extraOptions = "--storage-opt dm.basesize=40G --storage-opt dm.fs=xfs";
+  systemd.enableUnifiedCgroupHierarchy = false;
 }
