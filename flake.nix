@@ -124,7 +124,6 @@
           ./modules/host.nix
           ./modules/graphical.nix
           ./modules/microcontroller.nix
-          ./modules/openvpn-bad5.nix
           ./modules/pipewire.nix
           ./modules/sdr.nix
           ./modules/virtualization.nix
