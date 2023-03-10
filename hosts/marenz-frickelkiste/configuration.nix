@@ -3,6 +3,8 @@
 {
   system.stateVersion = "19.03";
 
+  hardware.enableAllFirmware = true;
+
   boot.tmpOnTmpfs = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.extraModulePackages = with config.boot.kernelPackages; [ ];
@@ -113,6 +115,8 @@
       whois
       nixfmt
       jq
+
+      chromium
     ];
 
   environment.etc."xdg/mimeapps.list".text = ''
@@ -143,10 +147,13 @@
       BrowsePoll padme.fsr.et.tu-dresden.de:631
     '';
     drivers = with pkgs; [
+      brlaser
       gutenprint
       hplip
       splix
       samsung-unified-linux-driver
+      foomatic-db-ppds-withNonfreeDb
+      fxlinuxprint
     ];
   };
 
