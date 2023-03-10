@@ -14,6 +14,8 @@
     </hostdev>
   '';
 
-  environment.systemPackages = with pkgs; [ cargo-flash avrdude ];
-  services.udev.packages = with pkgs; [ probe-rs-udev ];
+  environment.systemPackages = with pkgs; [ cargo-flash avrdude segger-jlink ];
+  services.udev.packages = with pkgs; [ probe-rs-udev segger-jlink ];
+
+  nixpkgs.config.segger-jlink.acceptLicense = true;
 }
