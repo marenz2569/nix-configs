@@ -7,6 +7,8 @@
   sops.secrets.wg-zentralwerk-seckey.owner =
     config.users.users.systemd-network.name;
 
+  sops.secrets.wg-cal-marenz-seckey.owner = config.users.users.systemd-network.name;
+
   sops.secrets."openconnect-tud.pass" = {
     format = "binary";
     sopsFile = "${secrets}/openconnect-tud.pass";
@@ -346,6 +348,44 @@
         {
           routeConfig = {
             Destination = "10.65.90.0/24";
+            Metric = 300;
+          };
+        }
+      ];
+    };
+
+    netdevs."20-wg-cal-marenz" = {
+      netdevConfig = {
+        Kind = "wireguard";
+        Name = "wg-cal-marenz";
+      };
+      wireguardConfig = {
+        PrivateKeyFile = config.sops.secrets.wg-cal-marenz-seckey.path;
+      };
+      wireguardPeers = [{
+        wireguardPeerConfig = {
+          PublicKey = "HOXlcobW2RJFUpClCEuHZBZ2Vei8bzQypzHBs83g3EU=";
+          Endpoint = "85.235.64.67:51820";
+          AllowedIPs = [ "10.0.1.0/24" "10.0.20.0/24" ];
+          PersistentKeepalive = 25;
+        };
+      }];
+    };
+    networks."20-wg-cal-marenz" = {
+      matchConfig.Name = "wg-cal-marenz";
+      networkConfig = {
+        Address = "10.0.1.4/24";
+      };
+      routes = [
+        {
+          routeConfig = {
+            Destination = "10.0.1.0/24";
+            Metric = 300;
+          };
+        }
+        {
+          routeConfig = {
+            Destination = "10.0.20.0/24";
             Metric = 300;
           };
         }

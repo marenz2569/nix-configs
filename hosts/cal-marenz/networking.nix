@@ -52,7 +52,21 @@
         {
           wireguardPeerConfig = {
             PublicKey = "X/buhhASrS05ehQdp7Dl2PPFyN4Jh7jzZ3j0fA60QVU=";
-            AllowedIPs = [ "10.0.1.3/32" ];
+            AllowedIPs = [ "10.0.1.3/32" "10.0.20.0/24" ];
+            PersistentKeepalive = 25;
+          };
+        }
+        {
+          wireguardPeerConfig = {
+            PublicKey = "06GGOqS8S3k9No0sDbb4QDh4rINgRBQDZBpgIJWvIzw=";
+            AllowedIPs = [ "10.0.1.4/32" ];
+            PersistentKeepalive = 25;
+          };
+        }
+        {
+          wireguardPeerConfig = {
+            PublicKey = "wGugw4yYllwozPRRYWd7dG6bTD62mzqiXmfZG4qWxR0=";
+            AllowedIPs = [ "10.0.1.5/32" ];
             PersistentKeepalive = 25;
           };
         }
@@ -61,7 +75,10 @@
     networks."20-wg-bad5" = {
       matchConfig.Name = "wg-bad5";
       linkConfig = { RequiredForOnline = "no"; };
-      routes = [{ routeConfig = { Destination = "10.0.0.0/24"; }; }];
+      routes = [
+        { routeConfig = { Destination = "10.0.0.0/24"; }; }
+        { routeConfig = { Destination = "10.0.20.0/24"; }; }
+      ];
       networkConfig = {
         Address = "10.0.1.2/24";
         IPForward = "ipv4";

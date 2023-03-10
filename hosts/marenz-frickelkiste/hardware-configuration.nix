@@ -22,6 +22,7 @@
     "r8169"
   ];
   boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelParams = [ "btusb.enable_autosuspend=n" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
