@@ -8,7 +8,10 @@
   services.nginx.virtualHosts."cal.marenz.ee" = {
     enableACME = true;
     forceSSL = true;
-    locations."/".proxyPass = "http://localhost:5232";
+    locations."/" = {
+      proxyPass = "http://0.0.0.0:5232";
+      recommendedProxySettings = true;
+    };
   };
 
   services.radicale = {
