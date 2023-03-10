@@ -93,8 +93,8 @@
         (system: lib.nameValuePair system (packagesForSystem system))
         systems)) {
           "x86_64-linux" = {
-        #    gitlab-runner-docker-microvm =
-        #      self.nixosConfigurations.gitlab-runner-docker.config.microvm.declaredRunner;
+            #    gitlab-runner-docker-microvm =
+            #      self.nixosConfigurations.gitlab-runner-docker.config.microvm.declaredRunner;
           };
         };
 
@@ -102,6 +102,12 @@
         _module.args = { inherit zentralwerk; };
         imports = [ ./modules/zw-network.nix ./modules/zw-cluster-options.nix ];
       };
+
+      hydraJobs = (lib.mapAttrs (_: system:
+        system.config.microvm.declaredRunner or system.config.system.build.toplevel)
+      # filter out skyflake
+        (lib.filterAttrs (name: value: name != "gitlab-runner-docker")
+          self.nixosConfigurations)) // self.packages.x86_64-linux;
 
       nixosConfigurations.marenz-frickelkiste = lib.nixosSystem {
         system = "x86_64-linux";

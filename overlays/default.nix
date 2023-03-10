@@ -18,7 +18,7 @@ in {
   #     export CHROME_EXECUTABLE=${prev.google-chrome}/bin/google-chrome-stable
   #   '' + oldAttrs.startScript;
   # });
-  libsndfile = if prev.libsndfile.verion == "1.1.0" then
+  libsndfile = if prev.libsndfile.version == "1.1.0" then
     prev.libsndfile.overrideAttrs (oldAttrs: rec {
       version = "1.2.0";
       src = prev.fetchFromGitHub {
