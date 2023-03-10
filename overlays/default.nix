@@ -1,8 +1,10 @@
-{ nixpkgs-unstable, sdr-nix, ... }:
+{ nixpkgs-unstable, ... }:
 _final: prev:
 let
   pkgs-unstable = import nixpkgs-unstable { system = prev.system; };
-  flutterPackages = prev.lib.recurseIntoAttrs (prev.callPackage "${nixpkgs-unstable}/pkgs/development/compilers/flutter" { });
+  flutterPackages = prev.lib.recurseIntoAttrs
+    (prev.callPackage "${nixpkgs-unstable}/pkgs/development/compilers/flutter"
+      { });
 in {
   gxs700 = prev.python3Packages.callPackage ./gxs700 { };
   st = prev.st.override { conf = builtins.readFile ./st/st.h; };
@@ -10,15 +12,24 @@ in {
   nixLatest = pkgs-unstable.nix;
   probe-rs-udev = prev.callPackage ./probe-rs-udev { };
   ida-free = prev.callPackage ./ida-free { };
-  flutter = flutterPackages.stable.overrideAttrs(oldAttrs: {
-    startScript = ''
-      #!${prev.bash}/bin/bash
-      export CHROME_EXECUTABLE=${prev.google-chrome}/bin/google-chrome-stable
-    '' + oldAttrs.startScript;
-  });
-  SigDigger = sdr-nix.packages.${prev.system}.sigdigger.overrideAttrs(_oldAttrs: {
-    pname = "SigDigger";
-  });
+  # flutter = flutterPackages.stable.overrideAttrs(oldAttrs: {
+  #   startScript = ''
+  #     #!${prev.bash}/bin/bash
+  #     export CHROME_EXECUTABLE=${prev.google-chrome}/bin/google-chrome-stable
+  #   '' + oldAttrs.startScript;
+  # });
+  libsndfile = if prev.libsndfile.verion == "1.1.0" then
+    prev.libsndfile.overrideAttrs (oldAttrs: rec {
+      version = "1.2.0";
+      src = prev.fetchFromGitHub {
+        owner = oldAttrs.pname;
+        repo = oldAttrs.pname;
+        rev = version;
+        sha256 = "sha256-zd0HDUzVYLyFjhIudBJQaKJUtYMjZeQRLALSkyD9tXU=";
+      };
+    })
+  else
+    prev.libsndfile;
   vesc-tool = prev.libsForQt5.callPackage ./vesc-tool { };
   sieve = prev.callPackage ./sieve { };
   rtlsdr-to-gqrx = prev.callPackage ./rtlsdr-to-gqrx { };

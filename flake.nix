@@ -22,12 +22,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    sdr-nix = {
-      url = "github:polygon/sdr.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
     microvm = {
       url = "github:astro/microvm.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -50,16 +44,13 @@
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, secrets, nixos-hardware
-    , nix-matlab, sdr-nix, microvm, csi-collector, zentralwerk, ... }@attrs:
+    , nix-matlab, microvm, csi-collector, zentralwerk, ... }@attrs:
     let
       inherit (nixpkgs) lib;
 
       systems = [ "x86_64-linux" "aarch64-linux" ];
 
-      overlays = import ./overlays {
-        inherit nixpkgs-unstable;
-        inherit sdr-nix;
-      };
+      overlays = import ./overlays { inherit nixpkgs-unstable; };
 
       packages = system:
         let
