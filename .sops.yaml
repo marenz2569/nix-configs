@@ -13,8 +13,6 @@ creation_rules:
       - pgp:
         - *admin_marenz1
         - *admin_marenz2
-        age:
-        - *marenz-frickelkiste
   - path_regex: secrets/marenz-frickelkiste/[^/]+\.*$
     key_groups:
       - pgp:

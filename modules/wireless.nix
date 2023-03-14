@@ -1,7 +1,7 @@
 { config, secrets, ... }: {
   sops.secrets."wpa_supplicant.conf" = {
     format = "binary";
-    sopsFile = "${secrets}/wpa_supplicant.conf";
+    sopsFile = "${secrets}/marenz-frickelkiste/wpa_supplicant.conf";
   };
 
   networking.supplicant."wlp3s0" = {

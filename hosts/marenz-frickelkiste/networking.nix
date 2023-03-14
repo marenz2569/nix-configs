@@ -11,7 +11,7 @@
 
   sops.secrets."openconnect-tud.pass" = {
     format = "binary";
-    sopsFile = "${secrets}/openconnect-tud.pass";
+    sopsFile = "${secrets}/marenz-frickelkiste/openconnect-tud.pass";
   };
 
   # systemd.services.systemd-networkd.environment.SYSTEMD_LOG_LEVEL = "debug";
