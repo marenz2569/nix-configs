@@ -201,4 +201,9 @@
     unifiPackage = pkgs.unifiStable;
     openFirewall = true;
   };
+
+  programs.ausweisapp = {
+    enable = true;
+    openFirewall = true;
+  };
 }
