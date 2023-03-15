@@ -18,18 +18,20 @@ in {
   #     export CHROME_EXECUTABLE=${prev.google-chrome}/bin/google-chrome-stable
   #   '' + oldAttrs.startScript;
   # });
-  libsndfile = if prev.libsndfile.version == "1.1.0" then
-    prev.libsndfile.overrideAttrs (oldAttrs: rec {
-      version = "1.2.0";
-      src = prev.fetchFromGitHub {
-        owner = oldAttrs.pname;
-        repo = oldAttrs.pname;
-        rev = version;
-        sha256 = "sha256-zd0HDUzVYLyFjhIudBJQaKJUtYMjZeQRLALSkyD9tXU=";
-      };
-    })
+  sigdigger = if prev.libsndfile.version == "1.1.0" then
+    prev.sigdigger.override {
+      libsndfile = prev.libsndfile.overrideAttrs (oldAttrs: rec {
+        version = "1.2.0";
+        src = prev.fetchFromGitHub {
+          owner = oldAttrs.pname;
+          repo = oldAttrs.pname;
+          rev = version;
+          sha256 = "sha256-zd0HDUzVYLyFjhIudBJQaKJUtYMjZeQRLALSkyD9tXU=";
+        };
+      });
+    }
   else
-    prev.libsndfile;
+    prev.sigdigger;
   vesc-tool = prev.libsForQt5.callPackage ./vesc-tool { };
   sieve = prev.callPackage ./sieve { };
   rtlsdr-to-gqrx = prev.callPackage ./rtlsdr-to-gqrx { };
