@@ -6,9 +6,9 @@
   '';
   nix.settings.extra-sandbox-paths = [ "${config.programs.ccache.cacheDir}" ];
   nix.settings.substituters =
-    [ "https://dump-dvb.cachix.org" "https://nix-serve.hq.c3d2.de" ];
+    [ "https://tlm-solutions.cachix.org" "https://nix-serve.hq.c3d2.de" ];
   nix.settings.trusted-public-keys = [
-    "dump-dvb.cachix.org-1:+Dq7gqpQG4YlLA2X3xJsG1v3BrlUGGpVtUKWk0dTyUU="
+    "tlm-solutions.cachix.org-1:J7qT6AvoNWPSj+59ed5bNESj35DLJNaROqga1EjVIoA="
     "nix-serve.hq.c3d2.de:KZRGGnwOYzys6pxgM8jlur36RmkJQ/y8y62e52fj1ps="
   ];
 
