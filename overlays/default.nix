@@ -6,6 +6,7 @@ let
     (prev.callPackage "${nixpkgs-unstable}/pkgs/development/compilers/flutter"
       { });
 in {
+  anchore-cli = prev.python3Packages.callPackage ./anchore-cli { };
   gxs700 = prev.python3Packages.callPackage ./gxs700 { };
   st = prev.st.override { conf = builtins.readFile ./st/st.h; };
   vampir = prev.callPackage ./vampir { };
