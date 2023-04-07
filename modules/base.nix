@@ -51,13 +51,15 @@
     ohMyZsh = {
       enable = true;
       theme = "agnoster";
-      plugins = [ "git" "virtualenv" "sudo" ];
+      plugins = [ "git" "virtualenv" "sudo" "fzf" ];
     };
     # https://vim.fandom.com/wiki/256_colors_setup_for_console_Vim
     shellInit = ''
       export TERM=screen-256color
     '';
   };
+
+  environment.systemPackages = [ pkgs.fzf ];
 
   users.users.root.shell = pkgs.zsh;
 
