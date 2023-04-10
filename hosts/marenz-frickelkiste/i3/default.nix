@@ -23,8 +23,4 @@
     source = ./lockscreen;
     mode = "0644";
   };
-  environment.etc."tmuxp/set.yaml" = {
-    source = ./set.yaml;
-    mode = "0644";
-  };
 }
