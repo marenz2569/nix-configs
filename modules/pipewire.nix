@@ -5,9 +5,16 @@ let
   libpipewire-module-zeroconf-discover = {
     "name" = "libpipewire-module-zeroconf-discover";
   };
+  # https://wiki.archlinux.org/title/PipeWire#Sound_does_not_automatically_switch_to_Bluetooth_headphones
+  switch-on-connect = [
+    { "cmd" = "load-module"; "args" = "module-always-sink"; "flags" = [ ]; }
+    { "cmd" = "load-module"; "args" = "module-switch-on-connect"; }
+  ];
   pipewire-pulse = default-pipewire-pulse // {
     "context.modules" = default-pipewire-pulse."context.modules"
       ++ lib.singleton libpipewire-module-zeroconf-discover;
+    "pulse.cmd" = default-pipewire-pulse."pulse.cmd"
+      ++ switch-on-connect;
   };
 in {
   # https://nixos.wiki/wiki/PipeWire
