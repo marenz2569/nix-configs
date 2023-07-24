@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -23,7 +23,7 @@
     };
 
     microvm = {
-      url = "github:astro/microvm.nix";
+      url = "github:astro/microvm.nix?ref=v0.3.3";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
@@ -75,7 +75,7 @@
               ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#controller-physec --target-host controller-physec --use-substitutes "$@"
             '';
           cal-marenz-nixos-rebuild =
-            pkgs.writeScriptBin "controller-physec-nixos-rebuild" ''
+            pkgs.writeScriptBin "cal-marenz-nixos-rebuild" ''
               #!${pkgs.runtimeShell} -ex
               ${pkgs.nixos-rebuild}/bin/nixos-rebuild --flake ${self}#cal-marenz --target-host cal-marenz --use-substitutes "$@"
             '';
@@ -93,8 +93,8 @@
         (system: lib.nameValuePair system (packagesForSystem system))
         systems)) {
           "x86_64-linux" = {
-            #    gitlab-runner-docker-microvm =
-            #      self.nixosConfigurations.gitlab-runner-docker.config.microvm.declaredRunner;
+            # gitlab-runner-docker-microvm =
+            #   self.nixosConfigurations.gitlab-runner-docker.config.microvm.declaredRunner;
           };
         };
 
