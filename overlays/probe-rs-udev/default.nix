@@ -5,7 +5,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://probe.rs/files/69-probe-rs.rules";
-    hash = "sha256-eKsKEpOnmHDmXnbdlmcuZ7dQLQ640UhrxibEIbgD4Qg=";
+    hash = "sha256-PBvAdQMaKdX7bMzkrnb5I5RadrZw/bHiIUaxAKcLfZU=";
   };
 
   phases = [ "installPhase" ];
