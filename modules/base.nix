@@ -1,15 +1,14 @@
 { config, pkgs, lib, self, ... }: {
   # NIX configuration
-  nix.package = pkgs.nixLatest;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
   nix.settings.extra-sandbox-paths = [ "${config.programs.ccache.cacheDir}" ];
   nix.settings.substituters =
-    [ "https://tlm-solutions.cachix.org" "https://nix-serve.hq.c3d2.de" ];
+    [ "https://tlm-solutions.cachix.org" "https://nix-cache.hq.c3d2.de" ];
   nix.settings.trusted-public-keys = [
     "tlm-solutions.cachix.org-1:J7qT6AvoNWPSj+59ed5bNESj35DLJNaROqga1EjVIoA="
-    "nix-serve.hq.c3d2.de:KZRGGnwOYzys6pxgM8jlur36RmkJQ/y8y62e52fj1ps="
+    "nix-cache.hq.c3d2.de:KZRGGnwOYzys6pxgM8jlur36RmkJQ/y8y62e52fj1ps="
   ];
 
   # override default nix shell nixpkgs# behaviour to use current flake lock
@@ -30,7 +29,7 @@
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
+    settings.PasswordAuthentication = false;
     ports = [ 22 ];
   };
 
@@ -81,7 +80,7 @@
 
   services.resolved = {
     enable = true;
-    dnssec = "true";
+    # dnssec = "true";
     fallbackDns = [ "1.1.1.1" ];
   };
 
