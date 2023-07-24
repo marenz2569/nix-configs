@@ -1,7 +1,7 @@
 keys:
   - &admin_marenz1 069836A578F7939612DB4934F77D0F7E247A1EE4
   - &admin_marenz2 ED06986DFAAE6A61B751DC2F537F97DFB394C433
-  - &marenz-frickelkiste age1vk2v0wk4g4uym54f7ldjrugwe86qhlu28dektp7cjlldadqrrg7sdze6x9
+  - &marenz-frickelkiste age1uhgh6wu6h6zkumkj9vrqgeznaggzs8stxhc8wxxh242z209jxpyq7z2t4u
   - &wg-bar-ma age1xwszjcwnkyshugls5etvqj8kn4jxw3q53cynfg9ufrma6m7vnywsvpp2lk
   - &controller-physec age153yu8l7wdx6e7zs63pvwrpzzqmljz5tp5ucx6yzxqs62n9wynvuq5czkqt
   - &gitlab-runner-docker age1j35a2gpr9e22gf966xj3mfu03h87nvy0nfgf7edgc65vcf8de4sqmp7xhf
