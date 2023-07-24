@@ -3,7 +3,7 @@
 
   sops.defaultSopsFile = "${secrets}/cal-marenz/secrets.yaml";
 
-  boot.cleanTmpDir = true;
+  boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;

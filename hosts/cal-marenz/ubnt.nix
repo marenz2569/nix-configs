@@ -1,7 +1,8 @@
 { pkgs, config, lib, ... }: {
   services.unifi = {
     enable = true;
-    unifiPackage = pkgs.unifiStable;
+    unifiPackage = pkgs.unifi7;
+    mongodbPackage = pkgs.mongodb-4_2;
     openFirewall = false;
   };
 
@@ -31,18 +32,23 @@
     };
   };
 
-  virtualisation.podman = {
+  virtualisation.docker = {
     enable = true;
-    dockerCompat = true;
+    storageDriver = "overlay2";
+    autoPrune.enable = true;
   };
 
   virtualisation.oci-containers = {
-    backend = "podman";
+    backend = "docker";
     containers."uisp" = {
-      image = "nico640/docker-unms";
+      image = "nico640/docker-unms:2.2.15";
       autoStart = true;
-      ports = [ "2055:2055" "9443:443" ];
+      ports = [ "127.0.0.1:2055:2055" "127.0.0.1:9443:443" ];
       volumes = [ "/var/lib/uisp:/config" ];
+      environment = {
+        PUBLIC_HTTPS_PORT = "9443";
+        PUBLIC_WS_PORT = "9443";
+      };
     };
   };
 
@@ -58,4 +64,17 @@
       '';
     };
   };
+
+  # pin docker to older nixpkgs: https://github.com/NixOS/nixpkgs/issues/244159
+  virtualisation.docker.package = (let
+    pinnedPkgs = import (pkgs.fetchFromGitHub {
+      owner = "NixOS";
+      repo = "nixpkgs";
+      rev = "b6bbc53029a31f788ffed9ea2d459f0bb0f0fbfc";
+      sha256 = "sha256-JVFoTY3rs1uDHbh0llRb1BcTNx26fGSLSiPmjojT+KY=";
+    }) { };
+  in if pkgs.docker.version == "20.10.25" then
+    pinnedPkgs.docker
+  else
+    pkgs.docker);
 }
