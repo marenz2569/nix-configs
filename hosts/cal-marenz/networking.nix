@@ -52,7 +52,7 @@
         {
           wireguardPeerConfig = {
             PublicKey = "X/buhhASrS05ehQdp7Dl2PPFyN4Jh7jzZ3j0fA60QVU=";
-            AllowedIPs = [ "10.0.1.3/32" "10.0.20.0/24" ];
+            AllowedIPs = [ "10.0.1.3/32" "10.0.20.0/24" "10.0.254.0/24" ];
             PersistentKeepalive = 25;
           };
         }
@@ -78,6 +78,7 @@
       routes = [
         { routeConfig = { Destination = "10.0.0.0/24"; }; }
         { routeConfig = { Destination = "10.0.20.0/24"; }; }
+        { routeConfig = { Destination = "10.0.254.0/24"; }; }
       ];
       networkConfig = {
         Address = "10.0.1.2/24";
