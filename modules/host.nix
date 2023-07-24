@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   nix.settings.auto-optimise-store = true;
 
-  services.openssh.forwardX11 = true;
+  services.openssh.settings.X11Forwarding = true;
 
   # Service configuration
   services.avahi = {
