@@ -5,5 +5,6 @@
     ./networking.nix
     ./radicale.nix
     ./ubnt.nix
+    ./bitwarden.nix
   ];
 }
